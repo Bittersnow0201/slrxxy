@@ -103,8 +103,10 @@ export function Photos() {
   }
 
   async function onSave() {
-    if (!caption.trim()) {
-      setError('写一句说明吧。')
+    const nextCaption = caption.trim() || '未命名照片'
+
+    if (mode === 'create' && !pendingFile) {
+      setError('先选一张照片。')
       return
     }
 
@@ -112,12 +114,8 @@ export function Photos() {
     setError('')
     try {
       if (mode === 'create') {
-        if (!pendingFile) {
-          setError('先选一张照片。')
-          return
-        }
-        const item = await uploadPhoto(pendingFile, {
-          caption: caption.trim(),
+        const item = await uploadPhoto(pendingFile!, {
+          caption: nextCaption,
           date: date || new Date().toISOString().slice(0, 10),
         })
         const next = [item, ...photos.filter((p) => p.src)]
@@ -130,7 +128,7 @@ export function Photos() {
         if (!current) return
         let nextItem: PhotoItem = {
           ...current,
-          caption: caption.trim(),
+          caption: nextCaption,
           date: date || current.date,
         }
         if (pendingFile) {

@@ -275,7 +275,6 @@ export function Edit() {
             ref={timelineFileRef}
             type="file"
             accept="image/*"
-            capture="environment"
             hidden
             onChange={(e) => onPickTimelineImage(e.target.files?.[0])}
           />
@@ -366,7 +365,6 @@ export function Edit() {
               ref={fileRef}
               type="file"
               accept="image/*"
-              capture="environment"
               hidden
               onChange={(e) => onPickPhoto(e.target.files?.[0])}
             />
@@ -376,7 +374,7 @@ export function Edit() {
               disabled={uploading || !cloudEnabled}
               onClick={() => fileRef.current?.click()}
             >
-              {uploading ? '上传中…' : '从手机选图 / 拍照'}
+              {uploading ? '上传中…' : '从相册选图'}
             </button>
           </div>
 

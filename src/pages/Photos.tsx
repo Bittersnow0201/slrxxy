@@ -263,7 +263,6 @@ export function Photos() {
             ref={fileRef}
             type="file"
             accept="image/*"
-            capture="environment"
             hidden
             onChange={(e) => onPickFile(e.target.files?.[0])}
           />
@@ -273,7 +272,7 @@ export function Photos() {
             disabled={uploading || !cloudEnabled}
             onClick={() => fileRef.current?.click()}
           >
-            {mode === 'create' ? '从手机选图 / 拍照' : '更换照片'}
+            {mode === 'create' ? '从相册选图' : '更换照片'}
           </button>
 
           <label>

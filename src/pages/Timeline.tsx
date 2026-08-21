@@ -419,7 +419,6 @@ export function Timeline() {
               ref={fileRef}
               type="file"
               accept="image/*"
-              capture="environment"
               hidden
               onChange={(e) => onPickImage(e.target.files?.[0])}
             />

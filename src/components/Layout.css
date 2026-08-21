@@ -1,0 +1,145 @@
+.shell {
+  position: relative;
+  min-height: 100dvh;
+  isolation: isolate;
+  animation: shell-in 0.9s var(--ease) both;
+}
+
+@keyframes shell-in {
+  from {
+    opacity: 0.55;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 64px;
+  padding: 0 clamp(1.1rem, 4vw, 2.4rem);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--void-lift) 78%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand-mini {
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.2rem 1.05rem;
+  overflow-x: auto;
+}
+
+.nav a,
+.logout-btn,
+.bgm-btn {
+  color: var(--ink-dim);
+  text-decoration: none;
+  font-size: 0.88rem;
+  letter-spacing: 0.02em;
+  background: none;
+  border: none;
+  padding: 0.2rem 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.25s ease;
+}
+
+.nav a:hover,
+.nav a.active,
+.logout-btn:hover,
+.bgm-btn:hover {
+  color: var(--ink);
+}
+
+.nav a.active {
+  color: var(--accent);
+}
+
+.bgm-btn.is-on {
+  color: var(--accent);
+}
+
+.main {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: 0 clamp(1.1rem, 4vw, 2rem) 4.5rem;
+}
+
+.main-home {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+}
+
+.topbar.on-hero {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: transparent;
+  border-bottom: none;
+  backdrop-filter: none;
+}
+
+.topbar.on-hero .brand-mini,
+.topbar.on-hero .nav a,
+.topbar.on-hero .logout-btn,
+.topbar.on-hero .bgm-btn {
+  color: color-mix(in srgb, var(--ink) 82%, transparent);
+}
+
+.topbar.on-hero .nav a.active,
+.topbar.on-hero .nav a:hover,
+.topbar.on-hero .logout-btn:hover,
+.topbar.on-hero .bgm-btn:hover,
+.topbar.on-hero .bgm-btn.is-on {
+  color: var(--ink);
+}
+
+.topbar.on-hero .bgm-btn.is-on {
+  color: var(--accent);
+}
+
+.footer {
+  text-align: center;
+  padding: 1.4rem 1rem 2.6rem;
+  color: var(--ink-dim);
+  font-size: 0.84rem;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 720px) {
+  .topbar {
+    height: auto;
+    min-height: 64px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+  }
+
+  .nav {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

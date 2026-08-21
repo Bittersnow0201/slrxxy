@@ -1,0 +1,112 @@
+:root {
+  color-scheme: light;
+
+  /* Shared Lamp Nest: rose-tinted warm light, not cream craft paper */
+  --void: #f6eef1;
+  --void-lift: #fff7f9;
+  --ink: #2c2326;
+  --ink-dim: #7a656c;
+  --accent: #c45d72;
+  --accent-deep: #a3475c;
+  --glow: #f0c9b0;
+  --ring: color-mix(in srgb, var(--ink) 14%, transparent);
+  --line: color-mix(in srgb, var(--ink) 10%, transparent);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --font-display: 'Archivo', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-body: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+
+  font-family: var(--font-body);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  color: var(--ink);
+  background: var(--void);
+  line-height: 1.55;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  min-width: 320px;
+  background:
+    radial-gradient(90% 55% at 12% 0%, color-mix(in srgb, var(--glow) 42%, transparent), transparent 55%),
+    radial-gradient(70% 45% at 90% 8%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 50%),
+    var(--void);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 28%, transparent);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 70%, white);
+  outline-offset: 3px;
+}
+
+.page {
+  padding-top: clamp(1.5rem, 4vh, 2.5rem);
+}
+
+.page-head {
+  max-width: 28rem;
+}
+
+.page-head h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5.5vw, 3.2rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  color: var(--ink);
+}
+
+.page-head p {
+  margin: 0.85rem 0 0;
+  color: var(--ink-dim);
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 36ch;
+}
+
+.auth-loading {
+  min-height: 100dvh;
+  background: var(--void);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

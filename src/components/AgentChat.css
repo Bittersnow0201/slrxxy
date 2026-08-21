@@ -1,0 +1,220 @@
+.agent-fab {
+  position: fixed;
+  left: max(1rem, env(safe-area-inset-left));
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  z-index: 45;
+  width: 4.1rem;
+  height: 4.1rem;
+  padding: 0.25rem;
+  border: 0;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--void-lift) 92%, transparent);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--accent) 18%, transparent);
+  cursor: pointer;
+  transition:
+    transform 0.28s var(--ease),
+    box-shadow 0.28s var(--ease);
+}
+
+.agent-fab img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.agent-fab:hover,
+.agent-fab.is-open {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 16px 34px color-mix(in srgb, var(--accent) 24%, transparent);
+}
+
+.agent-panel {
+  position: fixed;
+  left: max(1rem, env(safe-area-inset-left));
+  bottom: calc(max(1.25rem, env(safe-area-inset-bottom)) + 4.7rem);
+  z-index: 46;
+  width: min(22.5rem, calc(100vw - 2rem));
+  max-height: min(70dvh, 34rem);
+  display: grid;
+  grid-template-rows: auto auto 1fr auto auto;
+  border-radius: 1.15rem;
+  background: color-mix(in srgb, var(--void-lift) 94%, transparent);
+  box-shadow: 0 18px 44px color-mix(in srgb, var(--accent) 16%, transparent);
+  overflow: hidden;
+}
+
+.agent-panel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  align-items: flex-start;
+  padding: 0.85rem 0.9rem 0.7rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.agent-panel-title {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.agent-panel-avatar {
+  width: 2.4rem;
+  height: 2.4rem;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.agent-panel-title strong {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.agent-panel-title p {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+}
+
+.agent-panel-actions {
+  display: flex;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.agent-icon-btn {
+  border: 0;
+  background: transparent;
+  color: var(--ink-dim);
+  font: inherit;
+  font-size: 0.78rem;
+  padding: 0.25rem 0.4rem;
+  cursor: pointer;
+  border-radius: 0.45rem;
+}
+
+.agent-icon-btn:hover {
+  color: var(--accent-deep);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.agent-settings {
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--void) 55%, transparent);
+}
+
+.agent-settings label {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.agent-settings label span {
+  font-size: 0.75rem;
+  color: var(--ink-dim);
+}
+
+.agent-settings input,
+.agent-settings textarea,
+.agent-composer input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: var(--void-lift);
+  color: var(--ink);
+  padding: 0.55rem 0.7rem;
+  font: inherit;
+}
+
+.agent-settings textarea {
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.agent-messages {
+  min-height: 10rem;
+  overflow-y: auto;
+  padding: 0.85rem 0.9rem;
+  display: grid;
+  gap: 0.55rem;
+  align-content: start;
+}
+
+.agent-bubble {
+  max-width: 88%;
+  padding: 0.65rem 0.8rem;
+  border-radius: 0.95rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.agent-bubble.user {
+  justify-self: end;
+  background: color-mix(in srgb, var(--accent) 16%, white);
+  color: var(--ink);
+  border-bottom-right-radius: 0.35rem;
+}
+
+.agent-bubble.assistant {
+  justify-self: start;
+  background: color-mix(in srgb, var(--glow) 28%, white);
+  color: var(--ink);
+  border-bottom-left-radius: 0.35rem;
+}
+
+.agent-bubble.is-typing {
+  color: var(--ink-dim);
+  font-size: 0.85rem;
+}
+
+.agent-error {
+  margin: 0;
+  padding: 0 0.9rem 0.35rem;
+  color: var(--accent-deep);
+  font-size: 0.82rem;
+}
+
+.agent-composer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.45rem;
+  padding: 0.7rem 0.85rem 0.85rem;
+  border-top: 1px solid var(--line);
+}
+
+.agent-send {
+  min-height: 2.35rem;
+  padding: 0.45rem 0.95rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff7f9;
+  font: inherit;
+  cursor: pointer;
+}
+
+.agent-send:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.agent-send:hover:not(:disabled) {
+  background: var(--accent-deep);
+}
+
+@media (max-width: 520px) {
+  .agent-panel {
+    left: 0.75rem;
+    right: 0.75rem;
+    width: auto;
+    bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 4.5rem);
+  }
+}

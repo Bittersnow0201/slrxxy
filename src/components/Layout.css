@@ -31,6 +31,37 @@
   border-bottom: 1px solid var(--line);
 }
 
+.cloud-warn {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0.75rem clamp(1.1rem, 4vw, 2rem) 0;
+  padding: 0.85rem 1rem;
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--accent) 14%, white);
+  color: var(--accent-deep);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.cloud-warn p {
+  margin: 0;
+  flex: 1 1 16rem;
+}
+
+.cloud-warn button {
+  min-height: 2.2rem;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
+  border-radius: 999px;
+  background: var(--void-lift);
+  color: var(--accent-deep);
+  font: inherit;
+  cursor: pointer;
+}
+
 .brand-mini {
   font-family: var(--font-display);
   font-size: 0.98rem;

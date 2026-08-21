@@ -14,6 +14,7 @@ import {
   isCloudConfigured,
   saveRemoteContent,
   uploadRemoteImage,
+  type ContentLoadState,
 } from '../lib/cloudbase'
 import { compressImage } from '../lib/compressImage'
 
@@ -21,6 +22,8 @@ type ContentContextValue = {
   ready: boolean
   content: AppContent
   source: 'cloud' | 'local'
+  loadState: ContentLoadState
+  loadError: string
   cloudEnabled: boolean
   refresh: () => Promise<void>
   saveContent: (next: AppContent) => Promise<void>
@@ -34,13 +37,21 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false)
   const [content, setContent] = useState<AppContent>(defaultContent)
   const [source, setSource] = useState<'cloud' | 'local'>('local')
+  const [loadState, setLoadState] = useState<ContentLoadState>('disabled')
+  const [loadError, setLoadError] = useState('')
   const cloudEnabled = isCloudConfigured()
 
-  const refresh = useCallback(async () => {
+  const applyFetch = useCallback(async () => {
     const result = await fetchRemoteContent()
     setContent(result.content)
     setSource(result.source)
+    setLoadState(result.loadState)
+    setLoadError(result.errorMessage || '')
   }, [])
+
+  const refresh = useCallback(async () => {
+    await applyFetch()
+  }, [applyFetch])
 
   useEffect(() => {
     let cancelled = false
@@ -49,6 +60,8 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       if (cancelled) return
       setContent(result.content)
       setSource(result.source)
+      setLoadState(result.loadState)
+      setLoadError(result.errorMessage || '')
       setReady(true)
     })()
     return () => {
@@ -57,10 +70,19 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const saveContent = useCallback(async (next: AppContent) => {
-    await saveRemoteContent(next)
-    setContent({ ...next, updatedAt: Date.now() })
+    if (loadState === 'error') {
+      throw new Error(
+        loadError
+          ? `云端读取异常（${loadError}），暂不能保存，以免覆盖云端数据。请刷新后重试。`
+          : '云端读取异常，暂不能保存。请刷新后重试。',
+      )
+    }
+    const verified = await saveRemoteContent(next)
+    setContent(verified)
     setSource('cloud')
-  }, [])
+    setLoadState('cloud')
+    setLoadError('')
+  }, [loadState, loadError])
 
   const uploadPhoto = useCallback(
     async (file: File, meta: { caption: string; date: string }) => {
@@ -88,13 +110,26 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       ready,
       content,
       source,
+      loadState,
+      loadError,
       cloudEnabled,
       refresh,
       saveContent,
       uploadPhoto,
       uploadImage,
     }),
-    [ready, content, source, cloudEnabled, refresh, saveContent, uploadPhoto, uploadImage],
+    [
+      ready,
+      content,
+      source,
+      loadState,
+      loadError,
+      cloudEnabled,
+      refresh,
+      saveContent,
+      uploadPhoto,
+      uploadImage,
+    ],
   )
 
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>

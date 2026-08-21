@@ -10,10 +10,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate()
   const { logout } = useAuth()
   const { enabled: bgmOn, playing: bgmPlaying, toggle: toggleBgm, unlock } = useBgm()
-  const { content, ready } = useContent()
+  const { content, ready, cloudEnabled, loadState, loadError, refresh } = useContent()
   const isHome = pathname === '/'
   const brand = ready ? content.site.brand : 'slr和xxy的小宇宙'
   const footer = ready ? content.site.footer : ''
+  const showCloudWarn = cloudEnabled && (loadState === 'error' || loadState === 'cache')
 
   function onLogout() {
     logout()
@@ -56,6 +57,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </button>
         </nav>
       </header>
+
+      {showCloudWarn ? (
+        <div className="cloud-warn" role="status">
+          <p>
+            {loadState === 'cache'
+              ? '云端暂时读不到最新内容，先用本机缓存显示。请点「重新拉取」；若仍失败，请检查 CloudBase 存储读取权限。'
+              : `云端读取失败${loadError ? `：${loadError}` : ''}。请先点「重新拉取」，修好前请勿随意保存，以免覆盖云端数据。`}
+          </p>
+          <button type="button" onClick={() => void refresh()}>
+            重新拉取
+          </button>
+        </div>
+      ) : null}
 
       <main className={`main${isHome ? ' main-home' : ''}`}>{children}</main>
 

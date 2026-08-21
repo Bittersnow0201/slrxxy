@@ -169,7 +169,7 @@ export function Photos() {
     <section className="page photos-page">
       <header className="page-head">
         <h1>相册</h1>
-        <p>把想记住的光，留在这里。</p>
+        <p>我们珍贵的回忆</p>
       </header>
 
       {!cloudEnabled ? (

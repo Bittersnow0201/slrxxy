@@ -40,7 +40,7 @@ export function Home() {
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="brand-line">slr 和 xxy</span>
+            <span className="brand-line">小小雨 和 小小逸</span>
             <span className="brand-sub">的小宇宙</span>
           </motion.h1>
 

@@ -119,12 +119,23 @@ export function Timeline() {
 
   async function onSaveDraft() {
     if (!draft) return
-    if (!draft.date || !draft.title.trim()) {
-      setError('日期和标题都要填一下。')
+    const title = draft.title.trim()
+    const text = draft.text.trim()
+    if (!draft.date) {
+      setError('日期要填一下。')
+      return
+    }
+    if (!title && !text) {
+      setError('标题或内容至少填一项。')
       return
     }
     const payload = ensureTimelineId(
-      { ...draft, title: draft.title.trim(), text: draft.text.trim(), images: draft.images || [] },
+      {
+        ...draft,
+        title: title || '未命名',
+        text,
+        images: draft.images || [],
+      },
       0,
     )
     const next = placeTimelineByDate(items, payload)

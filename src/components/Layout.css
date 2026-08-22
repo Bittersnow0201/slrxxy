@@ -330,8 +330,7 @@
 
   .shell.is-home {
     height: 100svh;
-    height: 100dvh;
-    max-height: 100dvh;
+    max-height: 100svh;
     min-height: 0;
     overflow: hidden;
     padding-bottom: 0;

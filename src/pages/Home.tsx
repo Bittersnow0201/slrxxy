@@ -133,17 +133,12 @@ export function Home() {
           </motion.div>
         </div>
 
-        <motion.div
-          className="hero-video-wrap"
-          initial={reduce ? false : { opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.12, ease: [0.25, 0.1, 0.25, 1] }}
-        >
+        <div className="hero-video-wrap">
           <HomeIntroVideo
             src={`${import.meta.env.BASE_URL}media/intro.mp4`}
             poster={`${import.meta.env.BASE_URL}media/intro-poster.jpg`}
           />
-        </motion.div>
+        </div>
       </div>
     </section>
   )

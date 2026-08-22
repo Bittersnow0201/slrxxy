@@ -321,22 +321,10 @@
 }
 
 @media (max-width: 900px) {
-  html:has(.shell.is-home),
-  body:has(.shell.is-home) {
-    overflow: hidden;
-    height: 100%;
-    overscroll-behavior: none;
-  }
-
   .shell.is-home {
     --home-gutter: 1.25rem;
-    height: 100dvh;
-    max-height: 100dvh;
-    min-height: 0;
-    overflow: hidden;
+    min-height: 100dvh;
     padding-bottom: 0;
-    display: flex;
-    flex-direction: column;
   }
 
   .shell.is-home .topbar.on-hero {
@@ -345,21 +333,14 @@
   }
 
   .shell.is-home .main-home {
-    flex: 1;
     min-height: 0;
-    height: 100%;
+    height: auto;
     padding-bottom: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .shell.is-home .topbar .brand-mini {
-    display: none;
+    overflow: visible;
   }
 
   .shell.is-home .topbar-actions {
-    margin-left: 0;
+    margin-left: auto;
   }
 
   .shell.is-home .agent-fab {

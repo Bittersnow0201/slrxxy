@@ -53,8 +53,14 @@ export function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            <span className="brand-line">小小雨 和 小小逸</span>
-            <span className="brand-sub">的小宇宙</span>
+            {content.site.brand.endsWith('的小宇宙') ? (
+              <>
+                <span className="brand-line">{content.site.brand.replace(/的小宇宙$/, '')}</span>
+                <span className="brand-sub">的小宇宙</span>
+              </>
+            ) : (
+              <span className="brand-line">{content.site.brand}</span>
+            )}
           </motion.h1>
 
           <motion.p

@@ -321,31 +321,23 @@
 }
 
 @media (max-width: 900px) {
-  html:has(.shell.is-home),
-  body:has(.shell.is-home) {
-    overflow: hidden;
-    height: 100%;
-    overscroll-behavior: none;
-  }
-
   .shell.is-home {
-    height: 100svh;
-    max-height: 100svh;
-    min-height: 0;
-    overflow: hidden;
+    min-height: 100dvh;
     padding-bottom: 0;
-    display: flex;
-    flex-direction: column;
   }
 
   .shell.is-home .main-home {
-    flex: 1;
-    min-height: 0;
-    height: auto;
+    min-height: calc(100dvh - 3.25rem);
     padding-bottom: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+    overflow: visible;
+  }
+
+  .shell.is-home .topbar .brand-mini {
+    display: none;
+  }
+
+  .shell.is-home .topbar-actions {
+    margin-left: 0;
   }
 
   .shell.is-home .agent-fab {

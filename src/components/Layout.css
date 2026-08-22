@@ -382,7 +382,7 @@
   }
 
   .shell .main-home {
-    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+    padding-bottom: 0;
   }
 
   .shell.is-edit .main {

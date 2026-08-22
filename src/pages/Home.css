@@ -287,56 +287,149 @@
 }
 
 @media (max-width: 900px) {
+  .shell.is-home {
+    height: 100svh;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .shell.is-home .main-home {
+    height: 100%;
+    padding-bottom: 0;
+    overflow: hidden;
+  }
+
   .hero {
-    min-height: auto;
-    align-items: start;
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
 
   .hero-layout {
+    flex: 1;
+    min-height: 0;
+    height: 100%;
     grid-template-columns: 1fr;
-    align-items: start;
-    padding-top: calc(env(safe-area-inset-top, 0px) + 3.1rem);
-    padding-bottom: 1.25rem;
-    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    padding: calc(env(safe-area-inset-top, 0px) + 2.85rem) clamp(1.1rem, 4vw, 1.25rem)
+      calc(3.35rem + env(safe-area-inset-bottom, 0px));
+    gap: 0.55rem;
+    box-sizing: border-box;
+  }
+
+  .hero-copy {
+    flex-shrink: 0;
+    max-width: none;
+  }
+
+  .hero-video-wrap {
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
   }
 
   .hero-video-slot {
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+    max-height: 100%;
     margin: 0;
     max-width: none;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: unset;
+  }
+
+  .hero-video {
+    height: 100%;
+    object-fit: cover;
   }
 
   .brand-hero {
     max-width: none;
+    gap: 0.1rem;
   }
 
   .brand-line {
-    font-size: clamp(2.1rem, 6vw, 2.6rem);
+    font-size: clamp(1.95rem, 5.2vh, 2.35rem);
   }
 
   .brand-sub {
-    font-size: clamp(1.65rem, 4.8vw, 2rem);
+    font-size: clamp(1.5rem, 4.2vh, 1.85rem);
   }
 
   .tagline {
-    margin-top: 0.65rem;
+    margin-top: 0.45rem;
+    font-size: clamp(0.86rem, 2vh, 0.94rem);
+    line-height: 1.45;
   }
 
   .days {
-    margin-top: 1.1rem;
+    margin-top: 0.7rem;
+    gap: 0.45rem;
+  }
+
+  .days-num {
+    font-size: clamp(2.2rem, 6.5vh, 2.85rem);
+  }
+
+  .days-meta {
+    font-size: 0.92rem;
+    padding-bottom: 0.15rem;
+  }
+
+  .days-meta small {
+    font-size: 0.76rem;
   }
 
   .daily-spotlight {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
+    max-width: none;
+  }
+
+  .daily-spotlight-label {
+    margin-bottom: 0.2rem;
+    font-size: 0.68rem;
+  }
+
+  .daily-spotlight-card {
+    padding: 0.55rem 0.7rem;
+  }
+
+  .daily-spotlight-card.photo {
+    grid-template-columns: 2.35rem 1fr;
+    gap: 0.55rem;
+    align-items: center;
+  }
+
+  .daily-spotlight-card.photo img {
+    width: 2.35rem;
+    height: 2.35rem;
+  }
+
+  .daily-spotlight-card strong {
+    font-size: 0.92rem;
   }
 
   .cta {
-    margin-top: 1.1rem;
+    margin-top: 0.5rem;
   }
-}
 
-@media (max-width: 720px) {
-  .hero-layout {
-    padding-bottom: 1rem;
+  .cta .btn {
+    min-height: 2.45rem;
+    padding: 0.5rem 1.15rem;
+    font-size: 0.9rem;
+  }
+
+  .milestone-toast {
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+    top: auto;
+    bottom: calc(3.6rem + env(safe-area-inset-bottom, 0px));
+    z-index: 25;
+    max-width: none;
   }
 }

@@ -341,6 +341,14 @@
     padding-bottom: 0;
     overflow: hidden;
   }
+
+  .shell.is-home .agent-fab {
+    right: max(0.85rem, env(safe-area-inset-right));
+    left: auto;
+    bottom: calc(3.65rem + env(safe-area-inset-bottom, 0px));
+    width: 3.25rem;
+    height: 3.25rem;
+  }
 }
 
 .topbar.on-hero {

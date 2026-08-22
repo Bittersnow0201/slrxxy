@@ -288,130 +288,127 @@
 
 @media (max-width: 900px) {
   .hero {
-    height: 100%;
     min-height: 0;
-    display: grid;
+    height: 100%;
+    display: block;
     overflow: hidden;
   }
 
   .hero-layout {
-    min-height: 0;
     height: 100%;
-    display: grid;
-    grid-template-rows: auto minmax(0, 1fr);
-    align-content: stretch;
-    padding: calc(env(safe-area-inset-top, 0px) + 2.75rem) clamp(1.1rem, 4vw, 1.25rem)
-      calc(3.2rem + env(safe-area-inset-bottom, 0px));
-    gap: 0.65rem;
+    display: flex;
+    flex-direction: column;
+    padding: calc(env(safe-area-inset-top, 0px) + 2.85rem) clamp(1.1rem, 4vw, 1.25rem)
+      calc(3.15rem + env(safe-area-inset-bottom, 0px));
+    gap: 0.55rem;
     box-sizing: border-box;
     overflow: hidden;
   }
 
   .hero-copy {
-    min-height: 0;
+    flex: 0 0 auto;
     max-width: none;
   }
 
   .hero-video-wrap {
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
+    flex: 0 0 auto;
     width: 100%;
+    height: clamp(10.5rem, 31svh, 14.25rem);
+    margin-top: 0.15rem;
   }
 
   .hero-video-slot {
-    position: relative;
-    flex: 1 1 auto;
     width: 100%;
-    min-height: 0;
     height: 100%;
-    margin: 0;
     max-width: none;
+    margin: 0;
     aspect-ratio: unset;
+    border-radius: var(--radius-card);
+    box-shadow: 0 10px 28px color-mix(in srgb, var(--ink) 8%, transparent);
   }
 
   .hero-video {
-    position: absolute;
-    inset: 0;
+    position: static;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
   }
 
   .brand-hero {
     max-width: none;
-    gap: 0.1rem;
+    gap: 0.08rem;
   }
 
   .brand-line {
-    font-size: clamp(2rem, 5.5vh, 2.4rem);
+    font-size: clamp(1.95rem, 5.8vw, 2.35rem);
   }
 
   .brand-sub {
-    font-size: clamp(1.55rem, 4.5vh, 1.9rem);
+    font-size: clamp(1.5rem, 4.6vw, 1.85rem);
   }
 
   .tagline {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    line-height: 1.5;
+    margin-top: 0.45rem;
+    font-size: 0.88rem;
+    line-height: 1.45;
   }
 
   .days {
-    margin-top: 0.75rem;
-    gap: 0.45rem;
+    margin-top: 0.65rem;
+    gap: 0.4rem;
   }
 
   .days-num {
-    font-size: clamp(2.35rem, 7vh, 3rem);
+    font-size: clamp(2.25rem, 6.8vw, 2.85rem);
   }
 
   .days-meta {
-    font-size: 0.92rem;
-    padding-bottom: 0.15rem;
+    font-size: 0.9rem;
+    padding-bottom: 0.1rem;
   }
 
   .days-meta small {
-    font-size: 0.76rem;
+    font-size: 0.74rem;
   }
 
   .daily-spotlight {
-    margin-top: 0.55rem;
+    margin-top: 0.45rem;
     max-width: none;
   }
 
   .daily-spotlight-label {
-    margin-bottom: 0.2rem;
-    font-size: 0.68rem;
+    margin-bottom: 0.18rem;
+    font-size: 0.66rem;
   }
 
   .daily-spotlight-card {
-    padding: 0.55rem 0.7rem;
+    padding: 0.5rem 0.65rem;
   }
 
   .daily-spotlight-card.photo {
-    grid-template-columns: 2.35rem 1fr;
-    gap: 0.55rem;
+    grid-template-columns: 2.25rem 1fr;
+    gap: 0.5rem;
     align-items: center;
   }
 
   .daily-spotlight-card.photo img {
-    width: 2.35rem;
-    height: 2.35rem;
+    width: 2.25rem;
+    height: 2.25rem;
   }
 
   .daily-spotlight-card strong {
-    font-size: 0.92rem;
+    font-size: 0.88rem;
   }
 
   .cta {
-    margin-top: 0.55rem;
+    margin-top: 0.45rem;
   }
 
   .cta .btn {
-    min-height: 2.45rem;
-    padding: 0.5rem 1.15rem;
-    font-size: 0.9rem;
+    min-height: 2.35rem;
+    padding: 0.48rem 1.1rem;
+    font-size: 0.88rem;
   }
 
   .milestone-toast {

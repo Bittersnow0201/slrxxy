@@ -110,15 +110,8 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 0.5rem 1.2rem;
-  margin-left: auto;
-}
-
-.nav-main,
-.nav-actions {
-  display: flex;
-  align-items: center;
   gap: 0.2rem 1.05rem;
+  margin-left: auto;
 }
 
 .nav a,
@@ -272,17 +265,25 @@
     display: flex;
   }
 
-  .nav-main,
-  .nav-actions {
-    flex-direction: column;
-    align-items: stretch;
+  .nav {
+    align-items: flex-start;
     gap: 0.35rem;
   }
 
-  .nav-actions {
+  .nav .bgm-btn {
     margin-top: 0.5rem;
     padding-top: 0.65rem;
     border-top: 1px solid var(--line);
+    width: 100%;
+    text-align: left;
+  }
+
+  .nav-more {
+    width: 100%;
+  }
+
+  .nav-more-btn {
+    text-align: left;
   }
 
   .nav-more-menu {

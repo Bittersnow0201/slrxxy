@@ -103,48 +103,44 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </button>
 
         <nav id="site-nav" className={`nav${menuOpen ? ' open' : ''}`} aria-label="主导航">
-          <div className="nav-main">
-            {MAIN_LINKS.map((link) => (
-              <NavLink key={link.to} to={link.to} end={'end' in link ? link.end : undefined}>
-                {link.label}
-              </NavLink>
-            ))}
-          </div>
+          {MAIN_LINKS.map((link) => (
+            <NavLink key={link.to} to={link.to} end={'end' in link ? link.end : undefined}>
+              {link.label}
+            </NavLink>
+          ))}
 
-          <div className="nav-actions">
+          <button
+            type="button"
+            className={`bgm-btn${bgmOn ? ' is-on' : ''}`}
+            onClick={onBgmClick}
+            aria-pressed={bgmOn}
+            title={bgmOn ? '关闭背景音乐' : '打开背景音乐'}
+          >
+            {bgmLabel}
+          </button>
+
+          <div className="nav-more" ref={moreRef}>
             <button
               type="button"
-              className={`bgm-btn${bgmOn ? ' is-on' : ''}`}
-              onClick={onBgmClick}
-              aria-pressed={bgmOn}
-              title={bgmOn ? '关闭背景音乐' : '打开背景音乐'}
+              className={`nav-more-btn${moreOpen ? ' open' : ''}`}
+              aria-expanded={moreOpen}
+              onClick={(e) => {
+                e.stopPropagation()
+                setMoreOpen((v) => !v)
+              }}
             >
-              {bgmLabel}
+              更多
             </button>
-
-            <div className="nav-more" ref={moreRef}>
-              <button
-                type="button"
-                className={`nav-more-btn${moreOpen ? ' open' : ''}`}
-                aria-expanded={moreOpen}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setMoreOpen((v) => !v)
-                }}
-              >
-                更多
-              </button>
-              {moreOpen ? (
-                <div className="nav-more-menu" role="menu">
-                  <NavLink to="/edit" role="menuitem" onClick={() => setMoreOpen(false)}>
-                    编辑
-                  </NavLink>
-                  <button type="button" role="menuitem" onClick={onLogout}>
-                    退出
-                  </button>
-                </div>
-              ) : null}
-            </div>
+            {moreOpen ? (
+              <div className="nav-more-menu" role="menu">
+                <NavLink to="/edit" role="menuitem" onClick={() => setMoreOpen(false)}>
+                  编辑
+                </NavLink>
+                <button type="button" role="menuitem" onClick={onLogout}>
+                  退出
+                </button>
+              </div>
+            ) : null}
           </div>
         </nav>
       </header>

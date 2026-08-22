@@ -321,15 +321,31 @@
 }
 
 @media (max-width: 900px) {
+  html:has(.shell.is-home),
+  body:has(.shell.is-home) {
+    overflow: hidden;
+    height: 100%;
+    overscroll-behavior: none;
+  }
+
   .shell.is-home {
-    min-height: 100dvh;
+    height: 100dvh;
+    max-height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
     padding-bottom: 0;
+    display: flex;
+    flex-direction: column;
   }
 
   .shell.is-home .main-home {
-    min-height: calc(100dvh - 3.25rem);
+    flex: 1;
+    min-height: 0;
+    height: auto;
     padding-bottom: 0;
-    overflow: visible;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
 
   .shell.is-home .topbar .brand-mini {

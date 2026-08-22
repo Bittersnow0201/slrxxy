@@ -46,87 +46,91 @@ export function Home() {
       </div>
 
       <div className="hero-layout">
-        <div className="hero-copy">
-          <motion.h1
-            className="brand-hero"
-            initial={reduce ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-          >
-            {content.site.brand.endsWith('的小宇宙') ? (
-              <>
-                <span className="brand-line">{content.site.brand.replace(/的小宇宙$/, '')}</span>
-                <span className="brand-sub">的小宇宙</span>
-              </>
-            ) : (
-              <span className="brand-line">{content.site.brand}</span>
-            )}
-          </motion.h1>
+        <div className="hero-upper">
+          <div className="hero-copy">
+            <motion.h1
+              className="brand-hero"
+              initial={reduce ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              {content.site.brand.endsWith('的小宇宙') ? (
+                <>
+                  <span className="brand-line">{content.site.brand.replace(/的小宇宙$/, '')}</span>
+                  <span className="brand-sub">的小宇宙</span>
+                </>
+              ) : (
+                <span className="brand-line">{content.site.brand}</span>
+              )}
+            </motion.h1>
 
-          <motion.p
-            className="tagline"
-            initial={reduce ? false : { opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.08, ease: [0.25, 0.1, 0.25, 1] }}
-          >
-            {content.site.tagline}
-          </motion.p>
-
-          <motion.div
-            className={`days${showMilestone ? ' has-milestone' : ''}`}
-            initial={reduce ? false : { opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.14, ease: [0.25, 0.1, 0.25, 1] }}
-          >
-            <span className="days-num">{days}</span>
-            <span className="days-meta">
-              天
-              <small>
-                自 <time dateTime={content.togetherSince}>{formatDate(content.togetherSince)}</time>
-              </small>
-            </span>
-            {showMilestone ? (
-              <div className="milestone-toast" role="status">
-                <p>{milestone.message}</p>
-                <button type="button" onClick={onDismissMilestone} aria-label="关闭">
-                  ×
-                </button>
-              </div>
-            ) : null}
-          </motion.div>
-
-          {spotlight ? (
-            <motion.div
-              className="daily-spotlight"
+            <motion.p
+              className="tagline"
               initial={reduce ? false : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+              transition={{ duration: 0.5, delay: 0.08, ease: [0.25, 0.1, 0.25, 1] }}
             >
-              <p className="daily-spotlight-label">今日一点</p>
-              <div className="daily-spotlight-track">
-                {spotlight.kind === 'timeline' ? (
-                  <Link to="/timeline" className="daily-spotlight-card">
-                    <time dateTime={spotlight.item.date}>{formatDate(spotlight.item.date)}</time>
-                    <strong>{spotlight.item.title}</strong>
-                    {spotlight.item.text ? <span>{spotlight.item.text}</span> : null}
-                  </Link>
-                ) : (
-                  <Link to="/photos" className="daily-spotlight-card photo">
-                    {spotlight.item.src ? (
-                      <img src={photoSrc(spotlight.item.src)} alt="" loading="lazy" />
-                    ) : null}
-                    <div>
-                      {spotlight.item.caption ? <strong>{spotlight.item.caption}</strong> : null}
-                      {spotlight.item.date ? (
-                        <time dateTime={spotlight.item.date}>{formatDate(spotlight.item.date)}</time>
-                      ) : null}
-                    </div>
-                  </Link>
-                )}
-              </div>
-            </motion.div>
-          ) : null}
+              {content.site.tagline}
+            </motion.p>
 
+            <motion.div
+              className={`days${showMilestone ? ' has-milestone' : ''}`}
+              initial={reduce ? false : { opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.14, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              <span className="days-num">{days}</span>
+              <span className="days-meta">
+                天
+                <small>
+                  自 <time dateTime={content.togetherSince}>{formatDate(content.togetherSince)}</time>
+                </small>
+              </span>
+              {showMilestone ? (
+                <div className="milestone-toast" role="status">
+                  <p>{milestone.message}</p>
+                  <button type="button" onClick={onDismissMilestone} aria-label="关闭">
+                    ×
+                  </button>
+                </div>
+              ) : null}
+            </motion.div>
+
+            {spotlight ? (
+              <motion.div
+                className="daily-spotlight"
+                initial={reduce ? false : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+              >
+                <p className="daily-spotlight-label">今日一点</p>
+                <div className="daily-spotlight-track">
+                  {spotlight.kind === 'timeline' ? (
+                    <Link to="/timeline" className="daily-spotlight-card">
+                      <time dateTime={spotlight.item.date}>{formatDate(spotlight.item.date)}</time>
+                      <strong>{spotlight.item.title}</strong>
+                      {spotlight.item.text ? <span>{spotlight.item.text}</span> : null}
+                    </Link>
+                  ) : (
+                    <Link to="/photos" className="daily-spotlight-card photo">
+                      {spotlight.item.src ? (
+                        <img src={photoSrc(spotlight.item.src)} alt="" loading="lazy" />
+                      ) : null}
+                      <div>
+                        {spotlight.item.caption ? <strong>{spotlight.item.caption}</strong> : null}
+                        {spotlight.item.date ? (
+                          <time dateTime={spotlight.item.date}>{formatDate(spotlight.item.date)}</time>
+                        ) : null}
+                      </div>
+                    </Link>
+                  )}
+                </div>
+              </motion.div>
+            ) : null}
+          </div>
+        </div>
+
+        <div className="hero-lower">
           <motion.div
             className="cta"
             initial={reduce ? false : { opacity: 0, y: 8 }}
@@ -137,13 +141,13 @@ export function Home() {
               翻开故事
             </Link>
           </motion.div>
-        </div>
 
-        <div className="hero-video-wrap">
-          <HomeIntroVideo
-            src={`${import.meta.env.BASE_URL}media/intro.mp4`}
-            poster={`${import.meta.env.BASE_URL}media/intro-poster.jpg`}
-          />
+          <div className="hero-video-wrap">
+            <HomeIntroVideo
+              src={`${import.meta.env.BASE_URL}media/intro.mp4`}
+              poster={`${import.meta.env.BASE_URL}media/intro-poster.jpg`}
+            />
+          </div>
         </div>
       </div>
     </section>

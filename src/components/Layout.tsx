@@ -41,7 +41,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </NavLink>
           <NavLink to="/timeline">时间线</NavLink>
           <NavLink to="/photos">相册</NavLink>
-          <NavLink to="/letter">写给你</NavLink>
+          <NavLink to="/letter">悄悄话</NavLink>
           <NavLink to="/edit">编辑</NavLink>
           <button
             type="button"

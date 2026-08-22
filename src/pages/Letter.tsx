@@ -11,7 +11,7 @@ function newLetterDraft(): LetterContent {
     id: `letter-${Date.now()}`,
     from: 'slr',
     to: 'xxy',
-    title: '写给你',
+    title: '悄悄话',
     body: '',
     updatedAt: Date.now(),
   }
@@ -136,8 +136,8 @@ export function Letter() {
   return (
     <section className="page letter-page">
       <header className="page-head">
-        <h1>写给你</h1>
-        <p>想写多少封都行，就在这里慢慢收着。</p>
+        <h1>悄悄话</h1>
+        <p>我想让你知道...</p>
       </header>
 
       {!cloudEnabled ? (

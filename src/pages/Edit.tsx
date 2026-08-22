@@ -132,7 +132,7 @@ export function Edit() {
         id: `letter-${Date.now()}`,
         from: 'slr',
         to: 'xxy',
-        title: '写给你',
+        title: '悄悄话',
         body: '',
         updatedAt: Date.now(),
       },
@@ -212,7 +212,7 @@ export function Edit() {
             ['basic', '基本'],
             ['timeline', '时间线'],
             ['photos', '相册'],
-            ['letter', '信件'],
+            ['letter', '悄悄话'],
           ] as const
         ).map(([id, label]) => (
           <button

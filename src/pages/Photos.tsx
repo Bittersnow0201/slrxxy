@@ -103,7 +103,7 @@ export function Photos() {
   }
 
   async function onSave() {
-    const nextCaption = caption.trim() || '未命名照片'
+    const nextCaption = caption.trim()
 
     if (mode === 'create' && !pendingFile) {
       setError('先选一张照片。')
@@ -204,10 +204,12 @@ export function Photos() {
                       <span>{String(index + 1).padStart(2, '0')}</span>
                     </div>
                   )}
-                  <figcaption>
-                    <span>{photo.caption || '未命名照片'}</span>
-                    {photo.date ? <time dateTime={photo.date}>{formatDate(photo.date)}</time> : null}
-                  </figcaption>
+                  {photo.caption || photo.date ? (
+                    <figcaption>
+                      {photo.caption ? <span>{photo.caption}</span> : null}
+                      {photo.date ? <time dateTime={photo.date}>{formatDate(photo.date)}</time> : null}
+                    </figcaption>
+                  ) : null}
                   <div className="photo-item-actions">
                     <button
                       type="button"

@@ -10,7 +10,7 @@ const defaultLetter: LetterContent = {
   id: 'letter-legacy',
   from: 'slr',
   to: 'xxy',
-  title: '写给你',
+  title: '悄悄话',
   body: `嘿，
 
 从 2026 年 2 月 21 日开始，这个小宇宙就有了名字。

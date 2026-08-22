@@ -90,7 +90,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       const { fileID, url } = await uploadRemoteImage(blob, file.name.replace(/\.\w+$/, '') + '.jpg', 'photos')
       const item: PhotoItem = {
         src: url,
-        caption: meta.caption || '未命名照片',
+        caption: meta.caption || '',
         date: meta.date?.trim() || '',
         fileID,
       }

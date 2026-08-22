@@ -200,6 +200,32 @@
   color: var(--ink-dim);
 }
 
+.edit-backup {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.edit-backup h3 {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.edit-backup p {
+  margin: 0 0 0.85rem;
+  font-size: 0.9rem;
+  color: var(--ink-dim);
+  line-height: 1.55;
+}
+
+.edit-backup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
 button:disabled {
   opacity: 0.55;
   cursor: not-allowed;

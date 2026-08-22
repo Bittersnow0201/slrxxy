@@ -6,6 +6,8 @@ export type TimelineItem = {
   text: string
   /** 可选配图；旧云端数据没有该字段时按空数组处理 */
   images?: TimelineImage[]
+  /** 关联的相册照片（fileID 或 src）；旧数据无此字段时忽略 */
+  linkedPhotoRef?: string
 }
 
 export type TimelineImage = {
@@ -20,6 +22,8 @@ export type PhotoItem = {
   date: string
   /** CloudBase fileID when uploaded to cloud storage */
   fileID?: string
+  /** 关联的时间线节点 id；旧数据无此字段时忽略 */
+  linkedTimelineId?: string
 }
 
 export type LetterContent = {

@@ -194,8 +194,14 @@ function normalizeContent(raw: Partial<AppContent> | null | undefined): AppConte
       title: item.title,
       text: item.text,
       images: Array.isArray(item.images) ? item.images.filter((img) => img && (img.src || img.fileID)) : [],
+      ...(item.linkedPhotoRef ? { linkedPhotoRef: item.linkedPhotoRef } : {}),
     })),
-    photos: Array.isArray(raw?.photos) ? raw!.photos! : defaultContent.photos,
+    photos: Array.isArray(raw?.photos)
+      ? raw!.photos!.map((photo) => ({
+          ...photo,
+          ...(photo.linkedTimelineId ? { linkedTimelineId: photo.linkedTimelineId } : {}),
+        }))
+      : defaultContent.photos,
     letter: letters[0],
     letters,
     agent: (() => {

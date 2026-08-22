@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useContent } from '../content/ContentContext'
 import type { AppContent, LetterContent, PhotoItem, TimelineItem } from '../data/types'
+import { downloadAllPhotos, downloadJsonBackup } from '../lib/exportBackup'
 import { ensureTimelineId, newTimelineItem, placeTimelineByDate } from '../lib/timeline'
 import './Edit.css'
 
@@ -20,6 +21,7 @@ export function Edit() {
   const [timelineUploadIndex, setTimelineUploadIndex] = useState<number | null>(null)
   const [newCaption, setNewCaption] = useState('')
   const [newDate, setNewDate] = useState('')
+  const [exporting, setExporting] = useState(false)
 
   useEffect(() => {
     setDraft(content)
@@ -48,6 +50,28 @@ export function Edit() {
     setStatus('正在拉取最新内容…')
     await refresh()
     setStatus('已从云端刷新')
+  }
+
+  function onExportJson() {
+    setError('')
+    downloadJsonBackup(draft)
+    setStatus('JSON 备份已开始下载。')
+  }
+
+  async function onExportPhotos() {
+    setError('')
+    setExporting(true)
+    setStatus('正在逐张下载照片，请稍候…')
+    try {
+      await downloadAllPhotos(draft.photos, (done, total) => {
+        setStatus(`正在下载照片 ${done} / ${total}…`)
+      })
+      setStatus('全部照片已触发下载。')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '照片下载失败')
+    } finally {
+      setExporting(false)
+    }
   }
 
   function updateTimeline(index: number, patch: Partial<TimelineItem>) {
@@ -266,6 +290,19 @@ export function Edit() {
               onChange={(e) => setDraft((prev) => ({ ...prev, togetherSince: e.target.value }))}
             />
           </label>
+
+          <div className="edit-backup">
+            <h3>备份</h3>
+            <p>导出一份完整 JSON，以及相册里的全部照片，以防云端出问题。</p>
+            <div className="edit-backup-actions">
+              <button type="button" className="secondary" onClick={onExportJson}>
+                导出 JSON
+              </button>
+              <button type="button" className="secondary" disabled={exporting} onClick={() => void onExportPhotos()}>
+                {exporting ? '下载中…' : '下载全部照片'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 

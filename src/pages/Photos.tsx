@@ -1,7 +1,10 @@
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { motion, useReducedMotion } from 'motion/react'
+import { PhotoLightbox } from '../components/PhotoLightbox'
 import { useContent } from '../content/ContentContext'
 import { formatDate } from '../lib/days'
+import { createTimelineFromPhoto } from '../lib/photoLink'
 import type { AppContent, PhotoItem } from '../data/types'
 import './Photos.css'
 
@@ -36,12 +39,14 @@ export function Photos() {
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
   const [status, setStatus] = useState('')
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+
+  const photos = content.photos || []
+  const viewablePhotos = useMemo(() => photos.filter((p) => p.src), [photos])
 
   if (!ready) {
     return <div className="page auth-loading" aria-busy="true" />
   }
-
-  const photos = content.photos || []
 
   function resetForm() {
     setCaption('')
@@ -151,6 +156,36 @@ export function Photos() {
     }
   }
 
+  async function onAddToTimeline(index: number) {
+    const photo = photos[index]
+    if (!photo?.src) return
+    if (photo.linkedTimelineId) {
+      setStatus('这张照片已经关联过时间线了。')
+      return
+    }
+    if (!window.confirm('把这张照片加到时间线？会引用同一张图，不会重复上传。')) return
+    setSaving(true)
+    setError('')
+    try {
+      const next = createTimelineFromPhoto(content, index)
+      await saveContent(next)
+      setStatus('已加到时间线，可以去时间线里补充文字。')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '操作失败')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  function openLightbox(index: number) {
+    const photo = photos[index]
+    if (!photo?.src) return
+    const viewIndex = viewablePhotos.findIndex(
+      (p) => (p.fileID && p.fileID === photo.fileID) || p.src === photo.src,
+    )
+    if (viewIndex >= 0) setLightboxIndex(viewIndex)
+  }
+
   async function onDelete(index: number) {
     const photo = photos[index]
     if (!photo) return
@@ -198,7 +233,9 @@ export function Photos() {
                   transition={{ duration: 0.65, delay: Math.min(index, 8) * 0.04, ease: [0.16, 1, 0.3, 1] }}
                 >
                   {photo.src ? (
-                    <img src={photoSrc(photo.src)} alt={photo.caption} loading="lazy" />
+                    <button type="button" className="photo-thumb-btn" onClick={() => openLightbox(index)}>
+                      <img src={photoSrc(photo.src)} alt={photo.caption} loading="lazy" />
+                    </button>
                   ) : (
                     <div className="photo-placeholder" role="img" aria-label={photo.caption}>
                       <span>{String(index + 1).padStart(2, '0')}</span>
@@ -211,6 +248,20 @@ export function Photos() {
                     </figcaption>
                   ) : null}
                   <div className="photo-item-actions">
+                    {photo.linkedTimelineId ? (
+                      <Link to="/timeline" className="photos-btn ghost tiny">
+                        已在时间线
+                      </Link>
+                    ) : (
+                      <button
+                        type="button"
+                        className="photos-btn ghost tiny"
+                        disabled={!cloudEnabled || saving || !photo.src}
+                        onClick={() => void onAddToTimeline(index)}
+                      >
+                        加到时间线
+                      </button>
+                    )}
                     <button
                       type="button"
                       className="photos-btn ghost tiny"
@@ -308,6 +359,16 @@ export function Photos() {
 
       {error ? <p className="photos-error">{error}</p> : null}
       {status ? <p className="photos-status">{status}</p> : null}
+
+      {lightboxIndex !== null ? (
+        <PhotoLightbox
+          photos={viewablePhotos}
+          index={lightboxIndex}
+          srcFor={photoSrc}
+          onClose={() => setLightboxIndex(null)}
+          onIndexChange={setLightboxIndex}
+        />
+      ) : null}
     </section>
   )
 }

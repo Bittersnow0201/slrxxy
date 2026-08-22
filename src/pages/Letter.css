@@ -58,6 +58,12 @@
   color: var(--ink);
 }
 
+.letter-card-meta {
+  margin: 0;
+  color: var(--ink-dim);
+  font-size: 0.92rem;
+}
+
 .letter-card-main p {
   margin: 0;
   color: var(--ink-dim);
@@ -126,6 +132,28 @@
   border-radius: 1.1rem;
   background: color-mix(in srgb, var(--void-lift) 92%, transparent);
   box-shadow: 0 16px 40px color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.letter-reading {
+  max-width: 34rem;
+  padding: clamp(1.8rem, 4vw, 2.6rem) clamp(1.6rem, 3.8vw, 2.4rem);
+  background:
+    linear-gradient(165deg, color-mix(in srgb, #fff9f5 88%, var(--void-lift)) 0%, color-mix(in srgb, var(--void-lift) 94%, transparent) 100%);
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, var(--line));
+}
+
+.letter-reading-body p {
+  font-size: clamp(1.08rem, 2.2vw, 1.28rem);
+  line-height: 2.15;
+  letter-spacing: 0.03em;
+  color: color-mix(in srgb, var(--ink) 92%, transparent);
+}
+
+.letter-editor-hint {
+  margin: -0.35rem 0 0;
+  font-size: 0.82rem;
+  color: var(--ink-dim);
+  line-height: 1.5;
 }
 
 .letter-view-head {

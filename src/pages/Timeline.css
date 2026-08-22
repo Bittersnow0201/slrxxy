@@ -259,7 +259,8 @@
 }
 
 .timeline-editor input,
-.timeline-editor textarea {
+.timeline-editor textarea,
+.timeline-editor select {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 0.85rem;

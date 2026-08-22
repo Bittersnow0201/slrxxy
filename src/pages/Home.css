@@ -233,6 +233,127 @@
   color: var(--ink-dim);
 }
 
+.days.has-milestone .days-num {
+  animation: milestone-glow 2.4s ease-in-out infinite;
+}
+
+@keyframes milestone-glow {
+  0%,
+  100% {
+    text-shadow: 0 0 0 transparent;
+  }
+  50% {
+    text-shadow: 0 0 24px color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+}
+
+.milestone-toast {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 0.55rem);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  max-width: 18rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, var(--void-lift) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.milestone-toast p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--ink-dim);
+}
+
+.milestone-toast button {
+  flex-shrink: 0;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-dim);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.daily-spotlight {
+  margin-top: 1.35rem;
+  max-width: 22rem;
+}
+
+.daily-spotlight-label {
+  margin: 0 0 0.45rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.daily-spotlight-card {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.95rem;
+  text-decoration: none;
+  color: inherit;
+  background: color-mix(in srgb, var(--void-lift) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--line));
+  transition:
+    transform 0.25s var(--ease),
+    border-color 0.25s ease;
+}
+
+.daily-spotlight-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+}
+
+.daily-spotlight-card time {
+  font-size: 0.82rem;
+  color: var(--ink-dim);
+}
+
+.daily-spotlight-card strong {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.daily-spotlight-card span {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--ink-dim);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.daily-spotlight-card.photo {
+  grid-template-columns: 3.5rem 1fr;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.daily-spotlight-card.photo img {
+  width: 3.5rem;
+  height: 3.5rem;
+  object-fit: cover;
+  border-radius: 0.55rem;
+}
+
+.daily-spotlight-card.photo div {
+  display: grid;
+  gap: 0.15rem;
+}
+
 .cta {
   display: flex;
   flex-wrap: wrap;

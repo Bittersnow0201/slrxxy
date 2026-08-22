@@ -95,6 +95,27 @@
   border-radius: 1rem;
 }
 
+.photo-thumb-btn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+  border-radius: 1rem;
+}
+
+.photo-thumb-btn img {
+  display: block;
+}
+
+.photo-item-actions a.photos-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
 .photo-placeholder {
   width: 100%;
   aspect-ratio: 4 / 5;

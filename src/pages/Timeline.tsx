@@ -9,6 +9,13 @@ import {
   placeTimelineByDate,
   sortTimelineByDate,
 } from '../lib/timeline'
+import {
+  clearTimelinePhotoLink,
+  findPhotoIndex,
+  linkTimelineToPhoto,
+  photoRef,
+  timelineImageFromPhoto,
+} from '../lib/photoLink'
 import type { AppContent, TimelineImage, TimelineItem } from '../data/types'
 import './Timeline.css'
 
@@ -135,16 +142,33 @@ export function Timeline() {
         title: title || '未命名',
         text,
         images: draft.images || [],
+        linkedPhotoRef: draft.linkedPhotoRef,
       },
       0,
     )
-    const next = placeTimelineByDate(items, payload)
+    const nextTimeline = placeTimelineByDate(items, payload)
+    let nextContent: AppContent = { ...content, timeline: nextTimeline }
+    if (payload.linkedPhotoRef) {
+      const photoIndex = findPhotoIndex(content.photos, payload.linkedPhotoRef)
+      if (photoIndex >= 0) {
+        nextContent = linkTimelineToPhoto(nextContent, payload.id, photoIndex)
+      }
+    } else {
+      nextContent = clearTimelinePhotoLink(nextContent, payload.id)
+    }
     try {
-      await persist(next, '已保存，并按日期放好了位置。')
+      setSaving(true)
+      setError('')
+      setStatus('')
+      await saveContent(nextContent)
+      setLocalOrder(null)
+      setStatus('已保存，并按日期放好了位置。')
       setMode('list')
       setDraft(null)
-    } catch {
-      // error already set
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '保存失败')
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -412,6 +436,40 @@ export function Timeline() {
               value={draft.text}
               onChange={(e) => setDraft((prev) => (prev ? { ...prev, text: e.target.value } : prev))}
             />
+          </label>
+
+          <label>
+            <span>关联相册照片（可选）</span>
+            <select
+              value={draft.linkedPhotoRef || ''}
+              onChange={(e) => {
+                const ref = e.target.value
+                if (!ref) {
+                  setDraft((prev) => (prev ? { ...prev, linkedPhotoRef: undefined } : prev))
+                  return
+                }
+                const photo = content.photos.find((p) => photoRef(p) === ref)
+                const image = photo ? timelineImageFromPhoto(photo) : null
+                setDraft((prev) => {
+                  if (!prev) return prev
+                  const images = [...(prev.images || [])]
+                  if (image && !images.some((img) => (img.fileID || img.src) === ref)) {
+                    images.push(image)
+                  }
+                  return { ...prev, linkedPhotoRef: ref, images }
+                })
+              }}
+            >
+              <option value="">不关联</option>
+              {content.photos
+                .filter((p) => p.src)
+                .map((p, i) => (
+                  <option key={photoRef(p) || `photo-${i}`} value={photoRef(p)}>
+                    {p.caption || `照片 ${i + 1}`}
+                    {p.date ? ` · ${formatDate(p.date)}` : ''}
+                  </option>
+                ))}
+            </select>
           </label>
 
           <div className="timeline-editor-images">

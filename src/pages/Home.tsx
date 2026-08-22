@@ -1,10 +1,19 @@
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion } from 'motion/react'
 import { useAuth } from '../auth/AuthContext'
 import { useContent } from '../content/ContentContext'
 import { HomeIntroVideo } from '../components/HomeIntroVideo'
+import { pickDailySpotlight } from '../lib/dailySpotlight'
 import { daysTogether, formatDate } from '../lib/days'
+import { dismissMilestone, findMilestone, isMilestoneDismissed } from '../lib/milestones'
 import './Home.css'
+
+function photoSrc(src: string) {
+  if (!src) return ''
+  if (src.startsWith('http') || src.startsWith('data:') || src.startsWith('cloud://')) return src
+  return `${import.meta.env.BASE_URL}${src.replace(/^\//, '')}`
+}
 
 export function Home() {
   const { content, ready } = useContent()
@@ -12,18 +21,27 @@ export function Home() {
   const days = daysTogether(content.togetherSince)
   const reduce = useReducedMotion()
 
+  const milestone = useMemo(() => findMilestone(days), [days])
+  const [dismissTick, setDismissTick] = useState(0)
+  const showMilestone = milestone && !isMilestoneDismissed(milestone.days)
+  void dismissTick
+
+  const spotlight = useMemo(() => (ready ? pickDailySpotlight(content) : null), [content, ready])
+
   if (!ready) {
     return <div className="page auth-loading" aria-busy="true" />
+  }
+
+  function onDismissMilestone() {
+    if (!milestone) return
+    dismissMilestone(milestone.days)
+    setDismissTick((n) => n + 1)
   }
 
   return (
     <section className="hero">
       <div className="hero-plane" aria-hidden="true">
-        <img
-          className="hero-photo"
-          src={`${import.meta.env.BASE_URL}${heroBg}`}
-          alt=""
-        />
+        <img className="hero-photo" src={`${import.meta.env.BASE_URL}${heroBg}`} alt="" />
         <div className="hero-scrim" />
         <div className="hero-grain" />
         <div className="plane plane-a" />
@@ -54,7 +72,7 @@ export function Home() {
           </motion.p>
 
           <motion.div
-            className="days"
+            className={`days${showMilestone ? ' has-milestone' : ''}`}
             initial={reduce ? false : { opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
@@ -67,7 +85,45 @@ export function Home() {
                 自 <time dateTime={content.togetherSince}>{formatDate(content.togetherSince)}</time>
               </small>
             </span>
+            {showMilestone ? (
+              <div className="milestone-toast" role="status">
+                <p>{milestone.message}</p>
+                <button type="button" onClick={onDismissMilestone} aria-label="关闭">
+                  ×
+                </button>
+              </div>
+            ) : null}
           </motion.div>
+
+          {spotlight ? (
+            <motion.div
+              className="daily-spotlight"
+              initial={reduce ? false : { opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <p className="daily-spotlight-label">今日一点</p>
+              {spotlight.kind === 'timeline' ? (
+                <Link to="/timeline" className="daily-spotlight-card">
+                  <time dateTime={spotlight.item.date}>{formatDate(spotlight.item.date)}</time>
+                  <strong>{spotlight.item.title}</strong>
+                  {spotlight.item.text ? <span>{spotlight.item.text}</span> : null}
+                </Link>
+              ) : (
+                <Link to="/photos" className="daily-spotlight-card photo">
+                  {spotlight.item.src ? (
+                    <img src={photoSrc(spotlight.item.src)} alt="" loading="lazy" />
+                  ) : null}
+                  <div>
+                    {spotlight.item.caption ? <strong>{spotlight.item.caption}</strong> : null}
+                    {spotlight.item.date ? (
+                      <time dateTime={spotlight.item.date}>{formatDate(spotlight.item.date)}</time>
+                    ) : null}
+                  </div>
+                </Link>
+              )}
+            </motion.div>
+          ) : null}
 
           <motion.div
             className="cta"

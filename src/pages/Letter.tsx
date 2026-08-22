@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { useContent } from '../content/ContentContext'
 import type { AppContent, LetterContent } from '../data/types'
+import { displayPersonName, formatLetterMeta } from '../lib/names'
 import './Letter.css'
 
 type Mode = 'list' | 'view' | 'edit' | 'create'
@@ -148,7 +149,7 @@ export function Letter() {
         <>
           <div className="letter-toolbar">
             <button type="button" className="letter-btn primary" disabled={!cloudEnabled} onClick={openCreate}>
-              写一封新的
+              新的悄悄话
             </button>
           </div>
 
@@ -163,9 +164,7 @@ export function Letter() {
               >
                 <button type="button" className="letter-card-main" onClick={() => openView(item.id)}>
                   <h2>{item.title || '未命名信件'}</h2>
-                  <p>
-                    {item.from} 写给 {item.to}
-                  </p>
+                  <p className="letter-card-meta">{formatLetterMeta(item.from, item.to)}</p>
                   <p className="letter-preview">{item.body.replace(/\s+/g, ' ').trim().slice(0, 72) || '还没有正文'}</p>
                 </button>
                 <div className="letter-card-actions">
@@ -189,7 +188,7 @@ export function Letter() {
 
       {mode === 'view' && active ? (
         <motion.article
-          className="letter-sheet"
+          className="letter-sheet letter-reading"
           initial={reduce ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
@@ -213,10 +212,8 @@ export function Letter() {
             </div>
           </div>
           <h2 className="letter-view-title">{active.title}</h2>
-          <p className="letter-view-meta">
-            {active.from} 写给 {active.to}
-          </p>
-          <div className="letter-body">
+          <p className="letter-view-meta">{formatLetterMeta(active.from, active.to)}</p>
+          <div className="letter-body letter-reading-body">
             {active.body.split('\n').map((line, index) =>
               line.trim() === '' ? <br key={index} /> : <p key={index}>{line}</p>,
             )}
@@ -248,16 +245,22 @@ export function Letter() {
               <input
                 value={draft.from}
                 onChange={(e) => setDraft((prev) => (prev ? { ...prev, from: e.target.value } : prev))}
+                placeholder="小小逸"
               />
             </label>
             <label>
-              <span>写给</span>
+              <span>对谁说</span>
               <input
                 value={draft.to}
                 onChange={(e) => setDraft((prev) => (prev ? { ...prev, to: e.target.value } : prev))}
+                placeholder="小小雨"
               />
             </label>
           </div>
+          <p className="letter-editor-hint">
+            预览：{formatLetterMeta(draft.from || 'slr', draft.to || 'xxy')}
+            （也可用 slr / xxy，展示时会变成{displayPersonName('slr')} / {displayPersonName('xxy')}）
+          </p>
           <label>
             <span>正文</span>
             <textarea

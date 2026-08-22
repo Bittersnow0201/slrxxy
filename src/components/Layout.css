@@ -16,6 +16,18 @@
   }
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .topbar {
   display: flex;
   align-items: center;
@@ -70,19 +82,48 @@
   color: var(--ink);
   text-decoration: none;
   white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0.4rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+.nav-toggle-bar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 1px;
 }
 
 .nav {
   display: flex;
-  flex-wrap: nowrap;
   align-items: center;
-  justify-content: flex-end;
+  gap: 0.5rem 1.2rem;
+  margin-left: auto;
+}
+
+.nav-main,
+.nav-actions {
+  display: flex;
+  align-items: center;
   gap: 0.2rem 1.05rem;
-  overflow-x: auto;
 }
 
 .nav a,
-.logout-btn,
+.nav-more-btn,
+.nav-more-menu button,
 .bgm-btn {
   color: var(--ink-dim);
   text-decoration: none;
@@ -98,7 +139,8 @@
 
 .nav a:hover,
 .nav a.active,
-.logout-btn:hover,
+.nav-more-btn:hover,
+.nav-more-menu button:hover,
 .bgm-btn:hover {
   color: var(--ink);
 }
@@ -109,6 +151,43 @@
 
 .bgm-btn.is-on {
   color: var(--accent);
+}
+
+.nav-more {
+  position: relative;
+}
+
+.nav-more-btn.open {
+  color: var(--accent);
+}
+
+.nav-more-menu {
+  position: absolute;
+  top: calc(100% + 0.45rem);
+  right: 0;
+  min-width: 7.5rem;
+  padding: 0.35rem;
+  border-radius: 0.75rem;
+  background: var(--void-lift);
+  border: 1px solid var(--line);
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--accent) 12%, transparent);
+  display: grid;
+  gap: 0.15rem;
+  z-index: 30;
+}
+
+.nav-more-menu a,
+.nav-more-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.45rem 0.65rem;
+  border-radius: 0.5rem;
+}
+
+.nav-more-menu a:hover,
+.nav-more-menu button:hover {
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
 .main {
@@ -134,21 +213,30 @@
 
 .topbar.on-hero .brand-mini,
 .topbar.on-hero .nav a,
-.topbar.on-hero .logout-btn,
-.topbar.on-hero .bgm-btn {
+.topbar.on-hero .nav-more-btn,
+.topbar.on-hero .nav-more-menu button,
+.topbar.on-hero .bgm-btn,
+.topbar.on-hero .nav-toggle-bar {
   color: color-mix(in srgb, var(--ink) 82%, transparent);
 }
 
 .topbar.on-hero .nav a.active,
 .topbar.on-hero .nav a:hover,
-.topbar.on-hero .logout-btn:hover,
+.topbar.on-hero .nav-more-btn:hover,
+.topbar.on-hero .nav-more-menu button:hover,
 .topbar.on-hero .bgm-btn:hover,
-.topbar.on-hero .bgm-btn.is-on {
+.topbar.on-hero .bgm-btn.is-on,
+.topbar.on-hero .nav-more-btn.open {
   color: var(--ink);
 }
 
-.topbar.on-hero .bgm-btn.is-on {
+.topbar.on-hero .bgm-btn.is-on,
+.topbar.on-hero .nav-more-btn.open {
   color: var(--accent);
+}
+
+.topbar.on-hero .nav-more-menu {
+  background: color-mix(in srgb, var(--void-lift) 94%, transparent);
 }
 
 .footer {
@@ -159,18 +247,59 @@
   letter-spacing: 0.04em;
 }
 
-@media (max-width: 720px) {
-  .topbar {
-    height: auto;
-    min-height: 64px;
-    flex-direction: column;
-    align-items: flex-start;
-    padding-top: 0.9rem;
-    padding-bottom: 0.9rem;
+@media (max-width: 860px) {
+  .nav-toggle {
+    display: flex;
+    margin-left: auto;
   }
 
   .nav {
-    width: 100%;
-    justify-content: flex-start;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0.75rem clamp(1.1rem, 4vw, 2.4rem) 1rem;
+    background: color-mix(in srgb, var(--void-lift) 96%, transparent);
+    border-bottom: 1px solid var(--line);
+    backdrop-filter: blur(14px);
+    display: none;
+  }
+
+  .nav.open {
+    display: flex;
+  }
+
+  .nav-main,
+  .nav-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.35rem;
+  }
+
+  .nav-actions {
+    margin-top: 0.5rem;
+    padding-top: 0.65rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .nav-more-menu {
+    position: static;
+    box-shadow: none;
+    border: 0;
+    padding: 0;
+    margin-top: 0.25rem;
+  }
+
+  .topbar.on-hero .nav {
+    background: color-mix(in srgb, var(--void-lift) 92%, transparent);
+  }
+}
+
+@media (min-width: 861px) {
+  .nav-toggle {
+    display: none;
   }
 }

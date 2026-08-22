@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
+import { BottomSheet } from '../components/BottomSheet'
 import { useContent } from '../content/ContentContext'
 import type { AppContent, LetterContent } from '../data/types'
 import { displayPersonName, formatLetterMeta } from '../lib/names'
@@ -38,6 +39,7 @@ export function Letter() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [status, setStatus] = useState('')
+  const [immersive, setImmersive] = useState(false)
 
   useEffect(() => {
     if (mode === 'list') return
@@ -57,6 +59,7 @@ export function Letter() {
   function openView(id: string) {
     setError('')
     setStatus('')
+    setImmersive(false)
     setActiveId(id)
     setMode('view')
   }
@@ -188,7 +191,7 @@ export function Letter() {
 
       {mode === 'view' && active ? (
         <motion.article
-          className="letter-sheet letter-reading"
+          className={`letter-sheet letter-reading${immersive ? ' letter-immersive' : ''}`}
           initial={reduce ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
@@ -198,6 +201,9 @@ export function Letter() {
               返回列表
             </button>
             <div className="letter-card-actions">
+              <button type="button" className="letter-btn ghost" onClick={() => setImmersive((v) => !v)}>
+                {immersive ? '退出沉浸' : '沉浸阅读'}
+              </button>
               <button type="button" className="letter-btn ghost" disabled={!cloudEnabled} onClick={() => openEdit(active)}>
                 编辑
               </button>
@@ -221,6 +227,11 @@ export function Letter() {
         </motion.article>
       ) : null}
 
+      <BottomSheet
+        open={(mode === 'edit' || mode === 'create') && Boolean(draft)}
+        title={mode === 'create' ? '新的悄悄话' : '编辑悄悄话'}
+        onClose={mode === 'create' ? backToList : () => draft && openView(draft.id)}
+      >
       {(mode === 'edit' || mode === 'create') && draft ? (
         <div className="letter-editor">
           <div className="letter-view-head">
@@ -271,6 +282,7 @@ export function Letter() {
           </label>
         </div>
       ) : null}
+      </BottomSheet>
 
       {error ? <p className="letter-error">{error}</p> : null}
       {status ? <p className="letter-status">{status}</p> : null}

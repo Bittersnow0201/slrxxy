@@ -1,12 +1,15 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import { useBgm } from '../audio/BgmContext'
 import { useContent } from '../content/ContentContext'
+import { useOnlineStatus } from '../hooks/useOnlineStatus'
+import { usePullToRefresh } from '../hooks/usePullToRefresh'
 import { AgentChat } from './AgentChat'
+import { BottomTabBar } from './BottomTabBar'
 import './Layout.css'
 
-const MAIN_LINKS = [
+const DESKTOP_LINKS = [
   { to: '/', label: '首页', end: true },
   { to: '/timeline', label: '时间线' },
   { to: '/photos', label: '相册' },
@@ -19,28 +22,37 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const { logout } = useAuth()
   const { enabled: bgmOn, playing: bgmPlaying, toggle: toggleBgm, unlock } = useBgm()
   const { content, ready, cloudEnabled, loadState, loadError, refresh } = useContent()
+  const online = useOnlineStatus()
   const isHome = pathname === '/'
   const brand = ready ? content.site.brand : 'slr和xxy的小宇宙'
   const footer = ready ? content.site.footer : ''
   const showCloudWarn = cloudEnabled && (loadState === 'error' || loadState === 'cache')
+  const isEdit = pathname === '/edit'
 
-  const [menuOpen, setMenuOpen] = useState(false)
   const [moreOpen, setMoreOpen] = useState(false)
   const brandTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const moreRef = useRef<HTMLDivElement>(null)
+
+  const onPullRefresh = useCallback(async () => {
+    await refresh()
+  }, [refresh])
+
+  const { pulling, distance } = usePullToRefresh({ onRefresh: onPullRefresh, disabled: !cloudEnabled })
 
   useEffect(() => {
-    setMenuOpen(false)
     setMoreOpen(false)
   }, [pathname])
 
   useEffect(() => {
     if (!moreOpen) return
-    const onDoc = (e: MouseEvent) => {
-      if (!moreRef.current?.contains(e.target as Node)) setMoreOpen(false)
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMoreOpen(false)
     }
-    document.addEventListener('click', onDoc)
-    return () => document.removeEventListener('click', onDoc)
+    document.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
   }, [moreOpen])
 
   function onLogout() {
@@ -48,7 +60,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     navigate('/login', { replace: true })
   }
 
-  function onBgmClick() {
+  function onBgmToggle() {
     if (bgmOn && !bgmPlaying) {
       unlock()
       return
@@ -59,7 +71,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
   function onBrandPointerDown() {
     brandTimer.current = setTimeout(() => {
       navigate('/edit')
-      setMenuOpen(false)
       setMoreOpen(false)
     }, 600)
   }
@@ -71,10 +82,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const bgmLabel = !bgmOn ? '音乐关' : bgmPlaying ? '音乐开' : '点开音乐'
-
   return (
-    <div className={`shell${isHome ? ' is-home' : ''}`}>
+    <div className={`shell${isHome ? ' is-home' : ''}${isEdit ? ' is-edit' : ''}`}>
       <header className={`topbar${isHome ? ' on-hero' : ''}`}>
         <NavLink
           to="/"
@@ -89,61 +98,79 @@ export function Layout({ children }: { children: React.ReactNode }) {
           {brand}
         </NavLink>
 
-        <button
-          type="button"
-          className="nav-toggle"
-          aria-expanded={menuOpen}
-          aria-controls="site-nav"
-          onClick={() => setMenuOpen((v) => !v)}
-        >
-          <span className="nav-toggle-bar" />
-          <span className="nav-toggle-bar" />
-          <span className="nav-toggle-bar" />
-          <span className="sr-only">打开菜单</span>
-        </button>
+        <div className="topbar-actions">
+          <label className="bgm-switch" title={bgmOn ? '关闭背景音乐' : '打开背景音乐'}>
+            <span className="bgm-switch-label">音乐</span>
+            <input
+              type="checkbox"
+              checked={bgmOn}
+              onChange={onBgmToggle}
+              aria-label={bgmOn ? '音乐开' : '音乐关'}
+            />
+            <span className="bgm-switch-track" aria-hidden="true" />
+          </label>
 
-        <nav id="site-nav" className={`nav${menuOpen ? ' open' : ''}`} aria-label="主导航">
-          {MAIN_LINKS.map((link) => (
+          <button
+            type="button"
+            className={`more-trigger${moreOpen ? ' open' : ''}`}
+            aria-expanded={moreOpen}
+            onClick={() => setMoreOpen((v) => !v)}
+          >
+            更多
+          </button>
+        </div>
+
+        <nav className="nav-desktop" aria-label="主导航">
+          {DESKTOP_LINKS.map((link) => (
             <NavLink key={link.to} to={link.to} end={'end' in link ? link.end : undefined}>
               {link.label}
             </NavLink>
           ))}
-
-          <button
-            type="button"
-            className={`bgm-btn${bgmOn ? ' is-on' : ''}`}
-            onClick={onBgmClick}
-            aria-pressed={bgmOn}
-            title={bgmOn ? '关闭背景音乐' : '打开背景音乐'}
-          >
-            {bgmLabel}
+          <NavLink to="/edit">编辑</NavLink>
+          <button type="button" className="logout-btn" onClick={onLogout}>
+            退出
           </button>
-
-          <div className="nav-more" ref={moreRef}>
-            <button
-              type="button"
-              className={`nav-more-btn${moreOpen ? ' open' : ''}`}
-              aria-expanded={moreOpen}
-              onClick={(e) => {
-                e.stopPropagation()
-                setMoreOpen((v) => !v)
-              }}
-            >
-              更多
-            </button>
-            {moreOpen ? (
-              <div className="nav-more-menu" role="menu">
-                <NavLink to="/edit" role="menuitem" onClick={() => setMoreOpen(false)}>
-                  编辑
-                </NavLink>
-                <button type="button" role="menuitem" onClick={onLogout}>
-                  退出
-                </button>
-              </div>
-            ) : null}
-          </div>
         </nav>
       </header>
+
+      {moreOpen ? (
+        <div className="more-overlay" role="presentation">
+          <button type="button" className="more-overlay-backdrop" aria-label="关闭" onClick={() => setMoreOpen(false)} />
+          <aside className="more-panel" role="dialog" aria-label="更多">
+            <h2 className="more-panel-title">更多</h2>
+            <NavLink to="/edit" className="more-panel-link" onClick={() => setMoreOpen(false)}>
+              编辑
+            </NavLink>
+            <button type="button" className="more-panel-link" onClick={onLogout}>
+              退出
+            </button>
+            {cloudEnabled ? (
+              <button
+                type="button"
+                className="more-panel-link"
+                onClick={() => {
+                  setMoreOpen(false)
+                  void refresh()
+                }}
+              >
+                刷新云端
+              </button>
+            ) : null}
+          </aside>
+        </div>
+      ) : null}
+
+      {!online ? (
+        <div className="offline-banner" role="status">
+          当前离线，显示的可能是本机缓存内容
+        </div>
+      ) : null}
+
+      {pulling || distance > 0 ? (
+        <div className="pull-indicator" style={{ height: distance }} aria-hidden="true">
+          <span>{distance > 52 ? '松开刷新' : '下拉刷新'}</span>
+        </div>
+      ) : null}
 
       {showCloudWarn ? (
         <div className="cloud-warn" role="status">
@@ -166,6 +193,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </footer>
       )}
 
+      <BottomTabBar />
       <AgentChat />
     </div>
   )

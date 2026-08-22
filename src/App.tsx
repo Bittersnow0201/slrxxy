@@ -4,6 +4,7 @@ import { BgmProvider } from './audio/BgmContext'
 import { RequireAuth } from './auth/RequireAuth'
 import { ContentProvider } from './content/ContentContext'
 import { Layout } from './components/Layout'
+import { PageTransition } from './components/PageTransition'
 import { Home } from './pages/Home'
 import { Timeline } from './pages/Timeline'
 import { Photos } from './pages/Photos'
@@ -21,14 +22,16 @@ function AppRoutes() {
           <RequireAuth>
             <ContentProvider>
               <Layout>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/timeline" element={<Timeline />} />
-                  <Route path="/photos" element={<Photos />} />
-                  <Route path="/letter" element={<Letter />} />
-                  <Route path="/edit" element={<Edit />} />
-                  <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
+                <PageTransition>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/timeline" element={<Timeline />} />
+                    <Route path="/photos" element={<Photos />} />
+                    <Route path="/letter" element={<Letter />} />
+                    <Route path="/edit" element={<Edit />} />
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                  </Routes>
+                </PageTransition>
               </Layout>
             </ContentProvider>
           </RequireAuth>

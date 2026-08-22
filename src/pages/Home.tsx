@@ -27,6 +27,7 @@ export function Home() {
   void dismissTick
 
   const spotlight = useMemo(() => (ready ? pickDailySpotlight(content) : null), [content, ready])
+  const [videoExpanded, setVideoExpanded] = useState(false)
 
   if (!ready) {
     return <div className="page auth-loading" aria-busy="true" />
@@ -97,31 +98,33 @@ export function Home() {
 
           {spotlight ? (
             <motion.div
-              className="daily-spotlight"
+              className="daily-spotlight daily-spotlight-scroll"
               initial={reduce ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
             >
               <p className="daily-spotlight-label">今日一点</p>
-              {spotlight.kind === 'timeline' ? (
-                <Link to="/timeline" className="daily-spotlight-card">
-                  <time dateTime={spotlight.item.date}>{formatDate(spotlight.item.date)}</time>
-                  <strong>{spotlight.item.title}</strong>
-                  {spotlight.item.text ? <span>{spotlight.item.text}</span> : null}
-                </Link>
-              ) : (
-                <Link to="/photos" className="daily-spotlight-card photo">
-                  {spotlight.item.src ? (
-                    <img src={photoSrc(spotlight.item.src)} alt="" loading="lazy" />
-                  ) : null}
-                  <div>
-                    {spotlight.item.caption ? <strong>{spotlight.item.caption}</strong> : null}
-                    {spotlight.item.date ? (
-                      <time dateTime={spotlight.item.date}>{formatDate(spotlight.item.date)}</time>
+              <div className="daily-spotlight-track">
+                {spotlight.kind === 'timeline' ? (
+                  <Link to="/timeline" className="daily-spotlight-card">
+                    <time dateTime={spotlight.item.date}>{formatDate(spotlight.item.date)}</time>
+                    <strong>{spotlight.item.title}</strong>
+                    {spotlight.item.text ? <span>{spotlight.item.text}</span> : null}
+                  </Link>
+                ) : (
+                  <Link to="/photos" className="daily-spotlight-card photo">
+                    {spotlight.item.src ? (
+                      <img src={photoSrc(spotlight.item.src)} alt="" loading="lazy" />
                     ) : null}
-                  </div>
-                </Link>
-              )}
+                    <div>
+                      {spotlight.item.caption ? <strong>{spotlight.item.caption}</strong> : null}
+                      {spotlight.item.date ? (
+                        <time dateTime={spotlight.item.date}>{formatDate(spotlight.item.date)}</time>
+                      ) : null}
+                    </div>
+                  </Link>
+                )}
+              </div>
             </motion.div>
           ) : null}
 
@@ -138,10 +141,19 @@ export function Home() {
         </div>
 
         <motion.div
+          className={`hero-video-wrap${videoExpanded ? ' is-expanded' : ' is-compact'}`}
           initial={reduce ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
+          <button
+            type="button"
+            className="hero-video-toggle"
+            onClick={() => setVideoExpanded((v) => !v)}
+            aria-expanded={videoExpanded}
+          >
+            {videoExpanded ? '收起开场' : '展开开场视频'}
+          </button>
           <HomeIntroVideo
             src={`${import.meta.env.BASE_URL}media/intro.mp4`}
             poster={`${import.meta.env.BASE_URL}media/intro-poster.jpg`}

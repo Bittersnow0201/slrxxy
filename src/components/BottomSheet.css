@@ -1,0 +1,89 @@
+.bottom-sheet-root {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.bottom-sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(20, 12, 16, 0.42);
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+  animation: sheet-backdrop-in 0.28s ease;
+}
+
+.bottom-sheet-panel {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 640px;
+  max-height: min(88dvh, 720px);
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  padding: 0.5rem clamp(1rem, 4vw, 1.4rem) max(1rem, env(safe-area-inset-bottom));
+  border-radius: 1.2rem 1.2rem 0 0;
+  background: var(--void-lift);
+  box-shadow: 0 -12px 40px color-mix(in srgb, var(--accent) 14%, transparent);
+  animation: sheet-panel-in 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.bottom-sheet-handle {
+  width: 2.5rem;
+  height: 0.28rem;
+  margin: 0.35rem auto 0.65rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 18%, transparent);
+}
+
+.bottom-sheet-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.bottom-sheet-body {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@keyframes sheet-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sheet-panel-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 861px) {
+  .bottom-sheet-root {
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .bottom-sheet-panel {
+    border-radius: 1.1rem;
+    max-height: min(80dvh, 680px);
+  }
+
+  .bottom-sheet-handle {
+    display: none;
+  }
+}

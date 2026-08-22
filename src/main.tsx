@@ -11,3 +11,7 @@ createRoot(document.getElementById('root')!).render(
     <App />
   </StrictMode>,
 )
+
+requestAnimationFrame(() => {
+  document.body.classList.add('app-ready')
+})

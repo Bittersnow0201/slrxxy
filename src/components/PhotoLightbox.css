@@ -29,6 +29,15 @@
   transition: transform 0.2s ease;
 }
 
+.photo-lightbox-zoom {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-height: min(78dvh, 820px);
+  overflow: hidden;
+  touch-action: none;
+}
+
 .photo-lightbox-img {
   max-width: 100%;
   max-height: min(78dvh, 820px);
@@ -39,10 +48,8 @@
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
   user-select: none;
   -webkit-user-drag: none;
-}
-
-.photo-lightbox-img.dragging {
-  transition: none;
+  transform-origin: center center;
+  transition: transform 0.08s linear;
 }
 
 .photo-lightbox-close {

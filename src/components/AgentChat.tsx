@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useContent } from '../content/ContentContext'
+import { useDraggableFab } from '../hooks/useDraggableFab'
 import { sendAgentChat, type AgentChatMessage } from '../lib/agentApi'
 import type { AgentContent } from '../data/types'
 import './AgentChat.css'
@@ -24,6 +25,7 @@ export function AgentChat() {
   const [draftAgent, setDraftAgent] = useState<AgentContent>(agent)
   const [savingPersona, setSavingPersona] = useState(false)
   const listRef = useRef<HTMLDivElement>(null)
+  const drag = useDraggableFab(66)
 
   const [activeAgent, setActiveAgent] = useState<AgentContent>(agent)
 
@@ -103,10 +105,22 @@ export function AgentChat() {
     <>
       <button
         type="button"
-        className={`agent-fab${open ? ' is-open' : ''}`}
-        onClick={() => setOpen((v) => !v)}
+        ref={drag.ref}
+        className={`agent-fab${open ? ' is-open' : ''}${drag.style ? ' is-dragged' : ''}`}
+        style={drag.style}
+        onClick={() => {
+          if (drag.moved.current) {
+            drag.moved.current = false
+            return
+          }
+          setOpen((v) => !v)
+        }}
+        onPointerDown={drag.onPointerDown}
+        onPointerMove={drag.onPointerMove}
+        onPointerUp={drag.onPointerUp}
+        onPointerCancel={drag.onPointerCancel}
         aria-label={open ? `关闭${activeAgent.name}` : `打开${activeAgent.name}`}
-        title={activeAgent.name}
+        title={`${activeAgent.name}（可拖动）`}
       >
         <img src={AVATAR} alt="" draggable={false} />
       </button>

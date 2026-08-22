@@ -1,3 +1,9 @@
+.agent-fab.is-dragged {
+  position: fixed;
+  z-index: 45;
+  touch-action: none;
+}
+
 .agent-fab {
   position: fixed;
   left: max(1rem, env(safe-area-inset-left));

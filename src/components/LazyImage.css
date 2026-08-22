@@ -1,0 +1,62 @@
+.lazy-image-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: color-mix(in srgb, var(--accent) 6%, var(--void-lift));
+  border-radius: inherit;
+  overflow: hidden;
+  cursor: inherit;
+}
+
+.lazy-image-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    color-mix(in srgb, var(--void-lift) 90%, transparent) 30%,
+    color-mix(in srgb, var(--glow) 35%, transparent) 50%,
+    color-mix(in srgb, var(--void-lift) 90%, transparent) 70%
+  );
+  background-size: 200% 100%;
+  animation: lazy-shimmer 1.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.lazy-image {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: auto;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.lazy-image.is-loaded {
+  opacity: 1;
+}
+
+.lazy-image-wrap:has(.lazy-image.is-loaded) .lazy-image-shimmer {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+@keyframes lazy-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lazy-image-shimmer {
+    animation: none;
+  }
+
+  .lazy-image {
+    opacity: 1;
+  }
+}

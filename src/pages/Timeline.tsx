@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
+import { BottomSheet } from '../components/BottomSheet'
 import { useContent } from '../content/ContentContext'
 import { formatDate } from '../lib/days'
 import {
@@ -398,6 +399,11 @@ export function Timeline() {
         </>
       ) : null}
 
+      <BottomSheet
+        open={(mode === 'edit' || mode === 'create') && Boolean(draft)}
+        title={mode === 'create' ? '添加节点' : '编辑节点'}
+        onClose={backToList}
+      >
       {(mode === 'edit' || mode === 'create') && draft ? (
         <div className="timeline-editor">
           <div className="timeline-editor-head">
@@ -513,6 +519,7 @@ export function Timeline() {
           ) : null}
         </div>
       ) : null}
+      </BottomSheet>
 
       {error ? <p className="timeline-error">{error}</p> : null}
       {status ? <p className="timeline-status">{status}</p> : null}

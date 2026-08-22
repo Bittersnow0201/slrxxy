@@ -329,6 +329,7 @@
   }
 
   .shell.is-home {
+    --home-gutter: 1.25rem;
     height: 100dvh;
     max-height: 100dvh;
     min-height: 0;
@@ -336,6 +337,11 @@
     padding-bottom: 0;
     display: flex;
     flex-direction: column;
+  }
+
+  .shell.is-home .topbar.on-hero {
+    padding-left: var(--home-gutter);
+    padding-right: var(--home-gutter);
   }
 
   .shell.is-home .main-home {

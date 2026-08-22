@@ -190,6 +190,17 @@
   font: inherit;
 }
 
+.photos-date-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.photos-date-row input[type='date'] {
+  flex: 1 1 10rem;
+}
+
 .photos-error,
 .photos-status {
   margin: 1rem 0 0;

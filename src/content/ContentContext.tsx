@@ -91,7 +91,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       const item: PhotoItem = {
         src: url,
         caption: meta.caption || '未命名照片',
-        date: meta.date || new Date().toISOString().slice(0, 10),
+        date: meta.date?.trim() || '',
         fileID,
       }
       return item

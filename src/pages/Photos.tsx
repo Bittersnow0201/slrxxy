@@ -29,7 +29,7 @@ export function Photos() {
   const [mode, setMode] = useState<Mode>('list')
   const [editIndex, setEditIndex] = useState<number | null>(null)
   const [caption, setCaption] = useState('')
-  const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10))
+  const [date, setDate] = useState('')
   const [pendingFile, setPendingFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState('')
   const [saving, setSaving] = useState(false)
@@ -45,7 +45,7 @@ export function Photos() {
 
   function resetForm() {
     setCaption('')
-    setDate(new Date().toISOString().slice(0, 10))
+    setDate('')
     setPendingFile(null)
     setPreviewUrl('')
     setEditIndex(null)
@@ -66,7 +66,7 @@ export function Photos() {
     setStatus('')
     setEditIndex(index)
     setCaption(photo.caption || '')
-    setDate(photo.date || new Date().toISOString().slice(0, 10))
+    setDate(photo.date || '')
     setPendingFile(null)
     setPreviewUrl(photo.src ? photoSrc(photo.src) : '')
     setMode('edit')
@@ -113,10 +113,12 @@ export function Photos() {
     setUploading(true)
     setError('')
     try {
+      const nextDate = date.trim()
+
       if (mode === 'create') {
         const item = await uploadPhoto(pendingFile!, {
           caption: nextCaption,
-          date: date || new Date().toISOString().slice(0, 10),
+          date: nextDate,
         })
         const next = [item, ...photos.filter((p) => p.src)]
         await persist(next, '已添加照片。')
@@ -129,12 +131,12 @@ export function Photos() {
         let nextItem: PhotoItem = {
           ...current,
           caption: nextCaption,
-          date: date || current.date,
+          date: nextDate,
         }
         if (pendingFile) {
           nextItem = await uploadPhoto(pendingFile, {
             caption: nextItem.caption,
-            date: nextItem.date,
+            date: nextDate,
           })
         }
         const next = photos.map((item, i) => (i === editIndex ? nextItem : item))
@@ -204,7 +206,7 @@ export function Photos() {
                   )}
                   <figcaption>
                     <span>{photo.caption || '未命名照片'}</span>
-                    <time dateTime={photo.date}>{formatDate(photo.date)}</time>
+                    {photo.date ? <time dateTime={photo.date}>{formatDate(photo.date)}</time> : null}
                   </figcaption>
                   <div className="photo-item-actions">
                     <button
@@ -278,8 +280,15 @@ export function Photos() {
             <input value={caption} onChange={(e) => setCaption(e.target.value)} placeholder="例如：周末的阳光" />
           </label>
           <label>
-            <span>日期</span>
-            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+            <span>日期（可选，不选则不显示）</span>
+            <div className="photos-date-row">
+              <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+              {date ? (
+                <button type="button" className="photos-btn ghost tiny" onClick={() => setDate('')}>
+                  清除日期
+                </button>
+              ) : null}
+            </div>
           </label>
 
           {mode === 'edit' && editIndex !== null ? (

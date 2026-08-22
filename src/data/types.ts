@@ -16,6 +16,7 @@ export type TimelineImage = {
 export type PhotoItem = {
   src: string
   caption: string
+  /** 可为空；为空时相册不显示日期 */
   date: string
   /** CloudBase fileID when uploaded to cloud storage */
   fileID?: string

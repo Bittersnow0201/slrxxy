@@ -19,7 +19,7 @@ export function Edit() {
   const timelineFileRef = useRef<HTMLInputElement>(null)
   const [timelineUploadIndex, setTimelineUploadIndex] = useState<number | null>(null)
   const [newCaption, setNewCaption] = useState('')
-  const [newDate, setNewDate] = useState(() => new Date().toISOString().slice(0, 10))
+  const [newDate, setNewDate] = useState('')
 
   useEffect(() => {
     setDraft(content)

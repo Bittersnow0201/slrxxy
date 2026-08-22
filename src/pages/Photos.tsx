@@ -347,25 +347,53 @@ export function Photos() {
           </div>
 
           {mode === 'create' ? (
-            <div className="photos-batch-preview">
+            <>
+              <button
+                type="button"
+                className="photos-pick-zone"
+                disabled={uploading || !cloudEnabled}
+                onClick={() => fileRef.current?.click()}
+              >
+                <span className="photos-pick-icon" aria-hidden="true">
+                  +
+                </span>
+                <strong>{previewUrls.length > 0 ? '继续添加照片' : '点这里选择照片'}</strong>
+                <small>支持一次选多张</small>
+              </button>
               {previewUrls.length > 0 ? (
-                previewUrls.map((url) => (
-                  <img key={url} src={url} alt="" />
-                ))
-              ) : (
-                <div className="photo-placeholder">
-                  <span>可一次选多张</span>
+                <div className="photos-batch-preview">
+                  {previewUrls.map((url) => (
+                    <img key={url} src={url} alt="" />
+                  ))}
                 </div>
-              )}
-            </div>
+              ) : null}
+            </>
           ) : (
             <div className="photos-editor-preview">
               {previewUrl ? (
-                <img src={previewUrl} alt="" />
+                <>
+                  <img src={previewUrl} alt="" />
+                  <button
+                    type="button"
+                    className="photos-btn ghost"
+                    disabled={uploading || !cloudEnabled}
+                    onClick={() => fileRef.current?.click()}
+                  >
+                    更换照片
+                  </button>
+                </>
               ) : (
-                <div className="photo-placeholder">
-                  <span>选图</span>
-                </div>
+                <button
+                  type="button"
+                  className="photos-pick-zone compact"
+                  disabled={uploading || !cloudEnabled}
+                  onClick={() => fileRef.current?.click()}
+                >
+                  <span className="photos-pick-icon" aria-hidden="true">
+                    +
+                  </span>
+                  <strong>点这里更换照片</strong>
+                </button>
               )}
             </div>
           )}
@@ -378,14 +406,6 @@ export function Photos() {
             hidden
             onChange={(e) => onPickFiles(e.target.files)}
           />
-          <button
-            type="button"
-            className="photos-btn ghost"
-            disabled={uploading || !cloudEnabled}
-            onClick={() => fileRef.current?.click()}
-          >
-            {mode === 'create' ? '从相册选图（可多选）' : '更换照片'}
-          </button>
 
           {mode === 'create' && pendingFiles.length > 1 ? (
             <p className="photos-batch-hint">已选 {pendingFiles.length} 张，将使用相同日期批量添加。</p>

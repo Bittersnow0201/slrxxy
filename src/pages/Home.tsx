@@ -27,7 +27,6 @@ export function Home() {
   void dismissTick
 
   const spotlight = useMemo(() => (ready ? pickDailySpotlight(content) : null), [content, ready])
-  const [videoExpanded, setVideoExpanded] = useState(false)
 
   if (!ready) {
     return <div className="page auth-loading" aria-busy="true" />
@@ -141,19 +140,11 @@ export function Home() {
         </div>
 
         <motion.div
-          className={`hero-video-wrap${videoExpanded ? ' is-expanded' : ' is-compact'}`}
+          className="hero-video-wrap"
           initial={reduce ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
-          <button
-            type="button"
-            className="hero-video-toggle"
-            onClick={() => setVideoExpanded((v) => !v)}
-            aria-expanded={videoExpanded}
-          >
-            {videoExpanded ? '收起开场' : '展开开场视频'}
-          </button>
           <HomeIntroVideo
             src={`${import.meta.env.BASE_URL}media/intro.mp4`}
             poster={`${import.meta.env.BASE_URL}media/intro-poster.jpg`}

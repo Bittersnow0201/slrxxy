@@ -1,4 +1,5 @@
 import { useEffect, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import './BottomSheet.css'
 
 type Props = {
@@ -20,7 +21,7 @@ export function BottomSheet({ open, title, onClose, children }: Props) {
 
   if (!open) return null
 
-  return (
+  return createPortal(
     <div className="bottom-sheet-root" role="presentation">
       <button type="button" className="bottom-sheet-backdrop" aria-label="关闭" onClick={onClose} />
       <div className="bottom-sheet-panel" role="dialog" aria-modal="true" aria-label={title}>
@@ -28,6 +29,7 @@ export function BottomSheet({ open, title, onClose, children }: Props) {
         {title ? <h2 className="bottom-sheet-title">{title}</h2> : null}
         <div className="bottom-sheet-body">{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }

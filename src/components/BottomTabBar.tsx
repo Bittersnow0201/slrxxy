@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom'
 import { NavLink, useLocation } from 'react-router-dom'
 import './BottomTabBar.css'
 
@@ -13,7 +14,7 @@ export function BottomTabBar() {
 
   if (pathname === '/edit') return null
 
-  return (
+  const bar = (
     <nav className="bottom-tab-bar" aria-label="底部导航">
       {TABS.map((tab) => {
         const active = 'end' in tab && tab.end ? pathname === tab.to : pathname.startsWith(tab.to)
@@ -34,4 +35,6 @@ export function BottomTabBar() {
       })}
     </nav>
   )
+
+  return createPortal(bar, document.body)
 }

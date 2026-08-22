@@ -1,7 +1,7 @@
 .bottom-sheet-root {
   position: fixed;
   inset: 0;
-  z-index: 55;
+  z-index: 100;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -23,8 +23,8 @@
   width: 100%;
   max-width: 640px;
   max-height: min(88dvh, 720px);
-  display: grid;
-  grid-template-rows: auto auto 1fr;
+  display: flex;
+  flex-direction: column;
   padding: 0.5rem clamp(1rem, 4vw, 1.4rem) max(1rem, env(safe-area-inset-bottom));
   border-radius: 1.2rem 1.2rem 0 0;
   background: var(--void-lift);
@@ -50,6 +50,9 @@
 }
 
 .bottom-sheet-body {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }

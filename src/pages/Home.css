@@ -372,46 +372,6 @@
   position: relative;
 }
 
-.hero-video-wrap.is-compact .hero-video-slot {
-  max-height: 10rem;
-  overflow: hidden;
-}
-
-.hero-video-wrap.is-compact .hero-video-slot video {
-  object-fit: cover;
-}
-
-.hero-video-toggle {
-  display: none;
-  margin-bottom: 0.5rem;
-  min-height: 2.75rem;
-  padding: 0.45rem 0.9rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--void-lift) 88%, transparent);
-  color: var(--ink-dim);
-  font: inherit;
-  cursor: pointer;
-}
-
-@media (max-width: 720px) {
-  .hero-video-toggle {
-    display: inline-flex;
-  }
-
-  .hero-video-wrap.is-expanded .hero-video-slot {
-    max-height: none;
-  }
-
-  .days {
-    margin-top: 1.35rem;
-  }
-
-  .cta {
-    margin-top: 1.35rem;
-  }
-}
-
 .cta {
   display: flex;
   flex-wrap: wrap;

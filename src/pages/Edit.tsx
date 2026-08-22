@@ -358,7 +358,7 @@ export function Edit() {
               />
             </label>
             <label>
-              <span>日期</span>
+              <span>日期（可选）</span>
               <input type="date" value={newDate} onChange={(e) => setNewDate(e.target.value)} />
             </label>
             <input
@@ -393,10 +393,10 @@ export function Edit() {
                 />
               </label>
               <label>
-                <span>日期</span>
+                <span>日期（可选，清空则不显示）</span>
                 <input
                   type="date"
-                  value={photo.date}
+                  value={photo.date || ''}
                   onChange={(e) => updatePhoto(index, { date: e.target.value })}
                 />
               </label>

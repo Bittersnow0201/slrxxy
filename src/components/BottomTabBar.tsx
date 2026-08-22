@@ -1,13 +1,14 @@
 import { createPortal } from 'react-dom'
 import { NavLink, useLocation } from 'react-router-dom'
+import { TabIcon } from './TabIcon'
 import './BottomTabBar.css'
 
 const TABS = [
-  { to: '/', label: '首页', icon: '⌂', end: true },
-  { to: '/timeline', label: '时间线', icon: '◎' },
-  { to: '/photos', label: '相册', icon: '▣' },
-  { to: '/letter', label: '悄悄话', icon: '♡' },
-] as const
+  { to: '/', label: '首页', icon: 'home' as const, end: true },
+  { to: '/timeline', label: '时间线', icon: 'timeline' as const },
+  { to: '/photos', label: '相册', icon: 'photos' as const },
+  { to: '/letter', label: '悄悄话', icon: 'letter' as const },
+]
 
 export function BottomTabBar() {
   const { pathname } = useLocation()
@@ -26,8 +27,8 @@ export function BottomTabBar() {
             className={`bottom-tab${active ? ' active' : ''}`}
             aria-current={active ? 'page' : undefined}
           >
-            <span className="bottom-tab-icon" aria-hidden="true">
-              {tab.icon}
+            <span className="bottom-tab-icon">
+              <TabIcon name={tab.icon} active={active} />
             </span>
             <span className="bottom-tab-label">{tab.label}</span>
           </NavLink>

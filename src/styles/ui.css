@@ -1,0 +1,184 @@
+/* Shared UI — Apple structure + warm accent */
+
+.ui-btn,
+.btn,
+.timeline-btn,
+.photos-btn,
+.letter-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 0.94rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s var(--ease);
+}
+
+.ui-btn.tiny,
+.timeline-btn.tiny,
+.photos-btn.tiny,
+.letter-btn.tiny {
+  min-height: 2rem;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.84rem;
+  font-weight: 400;
+}
+
+.ui-btn:disabled,
+.btn:disabled,
+.timeline-btn:disabled,
+.photos-btn:disabled,
+.letter-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ui-btn.primary,
+.btn.primary,
+.timeline-btn.primary,
+.photos-btn.primary,
+.letter-btn.primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.ui-btn.primary:hover:not(:disabled),
+.btn.primary:hover:not(:disabled),
+.timeline-btn.primary:hover:not(:disabled),
+.photos-btn.primary:hover:not(:disabled),
+.letter-btn.primary:hover:not(:disabled) {
+  background: var(--accent-deep);
+}
+
+.ui-btn.ghost,
+.btn.ghost,
+.timeline-btn.ghost,
+.photos-btn.ghost,
+.letter-btn.ghost {
+  background: var(--surface);
+  border-color: var(--separator);
+  color: var(--ink);
+}
+
+.ui-btn.ghost:hover:not(:disabled),
+.btn.ghost:hover:not(:disabled),
+.timeline-btn.ghost:hover:not(:disabled),
+.photos-btn.ghost:hover:not(:disabled),
+.letter-btn.ghost:hover:not(:disabled) {
+  background: var(--fill-secondary);
+}
+
+.ui-btn.danger,
+.timeline-btn.danger,
+.photos-btn.danger,
+.letter-btn.danger {
+  background: transparent;
+  border-color: var(--separator);
+  color: var(--accent-deep);
+}
+
+.ui-banner {
+  margin-top: var(--space-4);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-card);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  background: var(--surface);
+  color: var(--ink-dim);
+  border: 1px solid var(--separator);
+}
+
+.ui-banner.warn {
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+  color: var(--accent-deep);
+  border-color: color-mix(in srgb, var(--accent) 12%, var(--separator));
+}
+
+.ui-toolbar {
+  margin-top: var(--space-5);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.ui-group {
+  margin-top: var(--space-5);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  border: 1px solid var(--separator);
+  overflow: hidden;
+}
+
+.ui-group > * + * {
+  border-top: 1px solid var(--separator);
+}
+
+.ui-field label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.ui-field label span,
+.ui-field-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ink-dim);
+  letter-spacing: 0.02em;
+}
+
+.ui-field input,
+.ui-field textarea,
+.ui-field select,
+.timeline-editor input,
+.timeline-editor textarea,
+.timeline-editor select,
+.photos-editor input,
+.letter-editor input,
+.letter-editor textarea {
+  width: 100%;
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-input);
+  background: var(--surface);
+  color: var(--ink);
+  padding: 0.72rem 0.9rem;
+  font: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ui-field input:focus,
+.ui-field textarea:focus,
+.ui-field select:focus,
+.timeline-editor input:focus,
+.timeline-editor textarea:focus,
+.timeline-editor select:focus,
+.photos-editor input:focus,
+.letter-editor input:focus,
+.letter-editor textarea:focus {
+  outline: none;
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--separator));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.ui-status-error {
+  margin: var(--space-4) 0 0;
+  font-size: 0.9rem;
+  color: var(--accent-deep);
+}
+
+.ui-status-ok {
+  margin: var(--space-4) 0 0;
+  font-size: 0.9rem;
+  color: var(--ink-dim);
+}

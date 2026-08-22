@@ -31,12 +31,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   const [moreOpen, setMoreOpen] = useState(false)
   const brandTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const pullIndicatorRef = useRef<HTMLDivElement>(null)
 
   const onPullRefresh = useCallback(async () => {
     await refresh()
   }, [refresh])
 
-  const { pulling, distance } = usePullToRefresh({ onRefresh: onPullRefresh, disabled: !cloudEnabled })
+  const { refreshing: pullRefreshing } = usePullToRefresh({
+    onRefresh: onPullRefresh,
+    disabled: !cloudEnabled,
+    indicatorRef: pullIndicatorRef,
+  })
 
   useEffect(() => {
     setMoreOpen(false)
@@ -166,11 +171,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
       ) : null}
 
-      {pulling || distance > 0 ? (
-        <div className="pull-indicator" style={{ height: distance }} aria-hidden="true">
-          <span>{distance > 52 ? '松开刷新' : '下拉刷新'}</span>
-        </div>
-      ) : null}
+      <div
+        ref={pullIndicatorRef}
+        className={`pull-indicator${pullRefreshing ? ' is-refreshing' : ''}`}
+        aria-hidden={!pullRefreshing}
+        role="status"
+      >
+        <span className="pull-indicator-text">下拉刷新</span>
+      </div>
 
       {showCloudWarn ? (
         <div className="cloud-warn" role="status">

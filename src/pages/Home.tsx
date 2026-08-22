@@ -43,20 +43,15 @@ export function Home() {
       <div className="hero-plane" aria-hidden="true">
         <img className="hero-photo" src={`${import.meta.env.BASE_URL}${heroBg}`} alt="" />
         <div className="hero-scrim" />
-        <div className="hero-grain" />
-        <div className="plane plane-a" />
-        <div className="plane plane-b" />
-        <span className="dial-ring ring-outer" />
-        <span className="dial-ring ring-inner" />
       </div>
 
       <div className="hero-layout">
         <div className="hero-copy">
           <motion.h1
             className="brand-hero"
-            initial={reduce ? false : { opacity: 0, y: 18, filter: 'blur(6px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            initial={reduce ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <span className="brand-line">小小雨 和 小小逸</span>
             <span className="brand-sub">的小宇宙</span>
@@ -64,20 +59,19 @@ export function Home() {
 
           <motion.p
             className="tagline"
-            initial={reduce ? false : { opacity: 0, y: 14 }}
+            initial={reduce ? false : { opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.5, delay: 0.08, ease: [0.25, 0.1, 0.25, 1] }}
           >
             {content.site.tagline}
           </motion.p>
 
           <motion.div
             className={`days${showMilestone ? ' has-milestone' : ''}`}
-            initial={reduce ? false : { opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            initial={reduce ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.14, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            <div className="days-dial" aria-hidden="true" />
             <span className="days-num">{days}</span>
             <span className="days-meta">
               天
@@ -97,10 +91,10 @@ export function Home() {
 
           {spotlight ? (
             <motion.div
-              className="daily-spotlight daily-spotlight-scroll"
-              initial={reduce ? false : { opacity: 0, y: 10 }}
+              className="daily-spotlight"
+              initial={reduce ? false : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.5, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
             >
               <p className="daily-spotlight-label">今日一点</p>
               <div className="daily-spotlight-track">
@@ -129,9 +123,9 @@ export function Home() {
 
           <motion.div
             className="cta"
-            initial={reduce ? false : { opacity: 0, y: 12 }}
+            initial={reduce ? false : { opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.34, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.5, delay: 0.24, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <Link className="btn primary" to="/timeline">
               翻开故事
@@ -141,9 +135,9 @@ export function Home() {
 
         <motion.div
           className="hero-video-wrap"
-          initial={reduce ? false : { opacity: 0, y: 16 }}
+          initial={reduce ? false : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.75, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.55, delay: 0.12, ease: [0.25, 0.1, 0.25, 1] }}
         >
           <HomeIntroVideo
             src={`${import.meta.env.BASE_URL}media/intro.mp4`}

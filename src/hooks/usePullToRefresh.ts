@@ -1,43 +1,92 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type RefObject } from 'react'
 
 type Options = {
   onRefresh: () => Promise<void>
   disabled?: boolean
+  indicatorRef: RefObject<HTMLDivElement | null>
 }
 
-export function usePullToRefresh({ onRefresh, disabled }: Options) {
-  const [pulling, setPulling] = useState(false)
-  const [distance, setDistance] = useState(0)
-  const startY = useRef(0)
-  const active = useRef(false)
+const THRESHOLD = 52
+const MAX_PULL = 72
+
+export function usePullToRefresh({ onRefresh, disabled, indicatorRef }: Options) {
+  const [refreshing, setRefreshing] = useState(false)
+  const onRefreshRef = useRef(onRefresh)
+  const refreshingRef = useRef(false)
+  const distanceRef = useRef(0)
+
+  onRefreshRef.current = onRefresh
+
+  function paintIndicator(distance: number, label: string) {
+    const el = indicatorRef.current
+    if (!el) return
+    el.style.transform = `translate3d(0, calc(-100% + ${distance}px), 0)`
+    el.style.opacity = distance > 0 ? String(Math.min(1, distance / 48)) : '0'
+    const text = el.querySelector<HTMLElement>('.pull-indicator-text')
+    if (text) text.textContent = label
+    el.classList.toggle('is-active', distance > 0)
+  }
+
+  function resetIndicator() {
+    paintIndicator(0, '下拉刷新')
+    indicatorRef.current?.classList.remove('is-refreshing')
+  }
 
   useEffect(() => {
     if (disabled) return
 
+    let active = false
+    let startY = 0
+
     const onStart = (e: TouchEvent) => {
-      if (window.scrollY > 4) return
-      startY.current = e.touches[0].clientY
-      active.current = true
+      if (refreshingRef.current || window.scrollY > 4) return
+      startY = e.touches[0].clientY
+      active = true
+      distanceRef.current = 0
     }
 
     const onMove = (e: TouchEvent) => {
-      if (!active.current) return
-      const dy = e.touches[0].clientY - startY.current
-      if (dy > 0 && window.scrollY <= 4) {
-        setPulling(true)
-        setDistance(Math.min(dy * 0.45, 72))
-        if (dy > 12) e.preventDefault()
+      if (!active || refreshingRef.current) return
+      const dy = e.touches[0].clientY - startY
+      if (dy <= 0) {
+        distanceRef.current = 0
+        paintIndicator(0, '下拉刷新')
+        return
       }
+      if (window.scrollY > 4) {
+        active = false
+        return
+      }
+
+      const distance = Math.min(dy * 0.38, MAX_PULL)
+      distanceRef.current = distance
+      paintIndicator(distance, distance > THRESHOLD ? '松开刷新' : '下拉刷新')
+
+      if (dy > 10) e.preventDefault()
     }
 
-    const onEnd = async () => {
-      if (!active.current) return
-      active.current = false
-      if (distance > 52) {
-        await onRefresh()
+    const onEnd = () => {
+      if (!active) return
+      active = false
+
+      if (distanceRef.current > THRESHOLD && !refreshingRef.current) {
+        refreshingRef.current = true
+        setRefreshing(true)
+        indicatorRef.current?.classList.add('is-refreshing')
+        paintIndicator(MAX_PULL, '同步中…')
+
+        void onRefreshRef
+          .current()
+          .finally(() => {
+            refreshingRef.current = false
+            setRefreshing(false)
+            resetIndicator()
+          })
+        return
       }
-      setPulling(false)
-      setDistance(0)
+
+      distanceRef.current = 0
+      resetIndicator()
     }
 
     window.addEventListener('touchstart', onStart, { passive: true })
@@ -50,7 +99,7 @@ export function usePullToRefresh({ onRefresh, disabled }: Options) {
       window.removeEventListener('touchend', onEnd)
       window.removeEventListener('touchcancel', onEnd)
     }
-  }, [disabled, distance, onRefresh])
+  }, [disabled, indicatorRef])
 
-  return { pulling, distance }
+  return { refreshing }
 }

@@ -4,6 +4,7 @@ import '@fontsource/archivo/400.css'
 import '@fontsource/archivo/500.css'
 import '@fontsource/archivo/600.css'
 import './index.css'
+import './styles/ui.css'
 import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(

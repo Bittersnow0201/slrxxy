@@ -11,39 +11,38 @@
     right: 0;
     bottom: 0;
     z-index: 90;
-    padding: 0.35rem 0.4rem max(0.45rem, env(safe-area-inset-bottom));
-    background: color-mix(in srgb, var(--void-lift) 96%, transparent);
-    border-top: 1px solid var(--line);
-    backdrop-filter: blur(16px);
-    box-shadow: 0 -8px 24px color-mix(in srgb, var(--accent) 8%, transparent);
+    padding: 0.2rem 0.35rem max(0.35rem, env(safe-area-inset-bottom));
+    background: var(--material);
+    border-top: 0.5px solid var(--separator);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
   }
 
   .bottom-tab {
     display: grid;
     justify-items: center;
-    gap: 0.15rem;
-    min-height: 3rem;
-    padding: 0.35rem 0.2rem;
+    gap: 0.1rem;
+    min-height: 3.1rem;
+    padding: 0.3rem 0.15rem;
     text-decoration: none;
     color: var(--ink-dim);
-    border-radius: 0.65rem;
-    transition:
-      color 0.2s ease,
-      background 0.2s ease;
+    border-radius: var(--radius-card);
+    transition: color 0.2s ease;
   }
 
   .bottom-tab.active {
     color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 8%, transparent);
   }
 
   .bottom-tab-icon {
-    font-size: 1.05rem;
-    line-height: 1;
+    display: grid;
+    place-items: center;
+    height: 1.5rem;
   }
 
   .bottom-tab-label {
-    font-size: 0.68rem;
-    letter-spacing: 0.02em;
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
   }
 }

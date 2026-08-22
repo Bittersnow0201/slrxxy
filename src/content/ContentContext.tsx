@@ -5,6 +5,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  startTransition,
   type ReactNode,
 } from 'react'
 import { defaultContent } from '../data/content'
@@ -17,6 +18,7 @@ import {
   type ContentLoadState,
 } from '../lib/cloudbase'
 import { compressImage } from '../lib/compressImage'
+import { contentFingerprint, mergeContentPreservingUrls } from '../lib/mergeContent'
 
 type ContentContextValue = {
   ready: boolean
@@ -43,10 +45,17 @@ export function ContentProvider({ children }: { children: ReactNode }) {
 
   const applyFetch = useCallback(async () => {
     const result = await fetchRemoteContent()
-    setContent(result.content)
-    setSource(result.source)
-    setLoadState(result.loadState)
-    setLoadError(result.errorMessage || '')
+    startTransition(() => {
+      setContent((prev) => {
+        if (contentFingerprint(prev) === contentFingerprint(result.content)) {
+          return prev
+        }
+        return mergeContentPreservingUrls(prev, result.content)
+      })
+      setSource(result.source)
+      setLoadState(result.loadState)
+      setLoadError(result.errorMessage || '')
+    })
   }, [])
 
   const refresh = useCallback(async () => {
